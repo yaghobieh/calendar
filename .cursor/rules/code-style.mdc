@@ -1,0 +1,28 @@
+---
+alwaysApply: true
+---
+# Code Style Rules
+
+No comments in code. No section dividers. No JSDoc comments.
+No unnecessary symbols like `//`, `/* */`, or `/** */`.
+Code should be self-documenting through clear naming.
+
+All constants, types, and numbers go into dedicated files:
+- `*.const.ts` / `*.constants.ts` for constants
+- `*.types.ts` for interfaces and types
+- `constants/numbers.const.ts` — `NUMBER_ZERO` … `NUMBER_TWENTY_FOUR`, calendar numbers
+- `constants/generals.const.ts` — `EMPTY_STRING`, shared string tokens
+- Feature-specific numbers stay in `numbers.const.ts` or component `*.const.ts`
+
+No inline magic numbers or magic strings. Extract to named constants.
+No inline/`style={{}}` for layout chrome — use CSS classes (`Cal-*` BEM).
+No `useMemo` / `useCallback` unless measured need or required by a dependency API.
+Avoid deep nested conditionals — early return or small helpers.
+
+Prefer `type` imports: `import type { X } from ...`
+
+No `any`. Use `unknown` when needed.
+
+No `export default` except `src/index.ts` when required by tooling.
+
+Clean exports: barrel `index.ts` in every folder.

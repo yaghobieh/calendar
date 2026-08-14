@@ -1,0 +1,36 @@
+---
+alwaysApply: true
+---
+# Project Structure
+
+## Component folder (required)
+
+```
+Name/
+  Name.tsx              # required
+  Name.types.ts         # required
+  index.ts              # required
+  Name.const.ts         # if needed
+  Name.utils.ts         # if needed
+```
+
+## Library (src/)
+
+- `src/components/{Name}/` — public or view subcomponents
+- `src/constants/` — defaults, numbers, generals
+- `src/types/` — public and internal types
+- `src/utils/` — pure helpers
+- `src/hooks/` — `useCalendar` and related hooks
+- `src/styles/calendar.css` — shipped as `dist/styles.css`
+
+CSS class prefix: `Cal-` (BEM).
+
+## Labels
+
+Use `library` vs `portal` on Jira/Linear/docs for every task.
+
+## Portal
+
+Companion repo: `calendar-portal` (Bear chrome). Same folder rules for pages/components.
+
+Every folder has an `index.ts` barrel export.

@@ -1,0 +1,11 @@
+export const CAL_MONTH = 'Cal-MonthView';
+export const CAL_MONTH_WEEKDAYS = 'Cal-MonthView__weekdays';
+export const CAL_MONTH_WEEKDAY = 'Cal-MonthView__weekday';
+export const CAL_MONTH_GRID = 'Cal-MonthView__grid';
+export const CAL_MONTH_CELL = 'Cal-MonthView__cell';
+export const CAL_MONTH_CELL_TODAY = 'Cal-MonthView__cell--today';
+export const CAL_MONTH_CELL_OTHER = 'Cal-MonthView__cell--other';
+export const CAL_MONTH_DATE = 'Cal-MonthView__date';
+export const CAL_MONTH_EVENTS = 'Cal-MonthView__events';
+export const CAL_MONTH_MORE = 'Cal-MonthView__more';
+export const SLOT_ALL_DAY = true;

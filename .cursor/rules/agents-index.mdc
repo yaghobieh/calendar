@@ -1,0 +1,14 @@
+---
+alwaysApply: true
+---
+# Calendar Agents Index
+
+| Agent / skill | When |
+|---|---|
+| **calendar-component-workflow** | Adding/changing scheduler views or chrome |
+| **calendar-code-quality** | Review — types/const separation, no magic values |
+| **calendar-release-workflow** | Version bump, CHANGELOG, build, publish |
+
+UI work follows ForgeStack Developer UI conventions. Publishing follows `@forgedevstack/*` CI pattern.
+
+Version policy: patches `1.0.0`–`1.0.9`, then minor `1.1.0`.
