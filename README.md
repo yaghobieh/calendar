@@ -69,9 +69,13 @@ Clicking a chip opens a wider Outlook-style popup (title, subtitle, time, show a
 
 Previous / Today / Next and Month / Week / Day / Agenda live in `Calendar`. Pass `navIcons` to swap the nav labels for icons.
 
+## 1.0.1
+
+Outlook-style event popup, hover peek, people collection, relation lines, timed resize, recurrence, show-as, and severity. Notes keep HTML when you pass an editor slot. Full notes: [CHANGELOG.md](CHANGELOG.md).
+
 ## Version policy
 
-Patches `1.0.0`–`1.0.9`, then minor `1.1.0`.
+Patches `1.0.0`–`1.0.9`, then minor `1.1.0`. Current release is **1.0.1**.
 
 ## Links
 

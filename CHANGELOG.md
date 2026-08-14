@@ -5,7 +5,14 @@ All notable changes to Forge Calendar will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.1] — Unreleased
+## [1.0.2] — Unreleased
+
+### Added
+
+- Event cache mechanism (FORGE-74)
+- AI agent mode for scheduling (FORGE-61 / FORGE-68)
+
+## [1.0.1] - 2026-08-14
 
 ### Added
 
