@@ -59,11 +59,23 @@ Focus the calendar root (`tabIndex={0}`):
 
 Set `mode="light"` or `mode="dark"`. Dark mode also follows `prefers-color-scheme` when `mode` is omitted.
 
-CSS variables: `--cal-primary`, `--cal-border`, `--cal-bg`, `--cal-text`, `--cal-muted`, `--cal-today`, `--cal-event`.
+Pass `theme` or a `config` object (`defineCalendarConfig`) to set `--cal-primary`, `--cal-border`, `--cal-bg`, `--cal-text`, `--cal-muted`, `--cal-today`, `--cal-event`.
+
+## Events
+
+Clicking a chip opens a wider Outlook-style popup (title, subtitle, time, show as, severity, people, description, Join meeting when `meetingUrl` is set). Hover a chip for a popover preview above the grid. Edit and create flip to a full-size card; the form scrolls when it overflows and Save and Cancel stay in the footer. Right-click a slot or event and handle `onContextMenu` (Create event, Mark as busy day, Open event). Drag the bottom edge of a timed week or day block to resize; `onEventChange` receives the new end time. The edit icon, close icon, Save, and Cancel are configurable via `eventModal`. Pass a `people` collection (`avatar`, `name`, `fullName`, `email`, `phone`, `linkedin`, `facebook`, `profileUrl`, `title`) and assign them with `peopleIds`. Hover a person chip for name, avatar, email, and phone; click for the full profile. Override connection icons with `personIcons` and severity marks with `severityIcons` (`none` | `low` | `normal` | `high` | `urgent`). Set `showAs` to `free`, `busy`, `tentative`, or `oof`. Invite and relation overlay the field (`translations.inviteLabel`) and list remaining options when opened. Set `relatedTo` on events to draw relation ribbons from event chip to event chip across month and week; hover a ribbon to see both event titles and times. `relations.visible` is `'always'`, `'onClick'`, or `'never'`. Edit **Relation with** against the full event list (`editModal.fields.relatedTo`); choosing a related event draws the ribbons immediately. Set `recurrence` on an event (`daily`, `weekly`, `monthly`, `everyXMonths`, `yearly`) to repeat it in the visible range. Click an empty month day to open a create popup (`eventModal.createOnSlot`). Open/close effects: `fade`, `scale`, `slideUp`, `none` — also style `--cal-modal-open-duration`, `--cal-modal-header-bg`, `--cal-modal-body-bg`. All popup labels go through `translations`.
+
+`layout` / `defaultLayout` is `'contained'` or `'fullPage'` (header icon toggle, overridable with `layoutIcons`). `eventModal.containment` is `'page'` (covers the viewport) or `'calendar'` (stays inside the calendar root).
+
+Previous / Today / Next and Month / Week / Day / Agenda live in `Calendar`. Pass `navIcons` to swap the nav labels for icons.
+
+## 1.0.1
+
+Outlook-style event popup, hover peek, people collection, relation lines, timed resize, recurrence, show-as, and severity. Notes keep HTML when you pass an editor slot. Full notes: [CHANGELOG.md](CHANGELOG.md).
 
 ## Version policy
 
-Patches `1.0.0`–`1.0.9`, then minor `1.1.0`.
+Patches `1.0.0`–`1.0.9`, then minor `1.1.0`. Current release is **1.0.1**.
 
 ## Links
 

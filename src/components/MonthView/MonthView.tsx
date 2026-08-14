@@ -5,6 +5,7 @@ import {
   CAL_MONTH_CELL_OTHER,
   CAL_MONTH_CELL_TODAY,
   CAL_MONTH_DATE,
+  CAL_MONTH_DATE_TODAY,
   CAL_MONTH_EVENTS,
   CAL_MONTH_GRID,
   CAL_MONTH_MORE,
@@ -12,6 +13,8 @@ import {
   CAL_MONTH_WEEKDAYS,
   SLOT_ALL_DAY,
 } from './MonthView.const';
+import { LAYOUT_MONTH } from '../RelationRibbons/RelationRibbons.const';
+import { RelationRibbons } from '../RelationRibbons';
 import { VARIANT_CHIP } from '../EventChip/EventChip.const';
 import { EventChip } from '../EventChip';
 import {
@@ -19,7 +22,7 @@ import {
   MORE_PREFIX,
   NUMBER_ONE,
   NUMBER_ZERO,
-} from '../../constants';
+} from '@constants';
 import {
   addDays,
   eventsForDay,
@@ -27,11 +30,12 @@ import {
   isSameDay,
   isSameMonth,
   joinClassNames,
+  slotDataAttrs,
   startOfDay,
-} from '../../utils';
+} from '@utils';
 
 export function MonthView(props: MonthViewProps) {
-  const { date, events, firstDayOfWeek, weekdays, onEventClick, onSlotClick } = props;
+  const { date, events, firstDayOfWeek, weekdays, onEventClick, onSlotClick, relationVisible, activeEventId, joinMeeting } = props;
   const today = new Date();
   const cells = getMonthGrid(date, firstDayOfWeek);
   const weekdayLabels = [
@@ -65,6 +69,7 @@ export function MonthView(props: MonthViewProps) {
                 isToday ? CAL_MONTH_CELL_TODAY : undefined,
                 isOther ? CAL_MONTH_CELL_OTHER : undefined,
               )}
+              {...slotDataAttrs(dayStart, SLOT_ALL_DAY)}
               onClick={() =>
                 onSlotClick?.({
                   start: dayStart,
@@ -73,7 +78,9 @@ export function MonthView(props: MonthViewProps) {
                 })
               }
             >
-              <span className={CAL_MONTH_DATE}>{cell.getDate()}</span>
+              <span className={joinClassNames(CAL_MONTH_DATE, isToday ? CAL_MONTH_DATE_TODAY : undefined)}>
+                {cell.getDate()}
+              </span>
               <div className={CAL_MONTH_EVENTS}>
                 {visible.map((event) => (
                   <EventChip
@@ -81,6 +88,7 @@ export function MonthView(props: MonthViewProps) {
                     event={event}
                     variant={VARIANT_CHIP}
                     onEventClick={onEventClick}
+                    joinMeeting={joinMeeting}
                   />
                 ))}
                 {hiddenCount > NUMBER_ZERO ? (
@@ -93,6 +101,13 @@ export function MonthView(props: MonthViewProps) {
             </div>
           );
         })}
+        <RelationRibbons
+          layout={LAYOUT_MONTH}
+          cells={cells}
+          events={events}
+          visible={relationVisible}
+          activeEventId={activeEventId}
+        />
       </div>
     </div>
   );

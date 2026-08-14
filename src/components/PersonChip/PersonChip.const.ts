@@ -1,0 +1,12 @@
+export const CAL_PERSON = 'Cal-PersonChip';
+export const CAL_PERSON_OPEN = 'Cal-PersonChip--open';
+export const CAL_PERSON_AVATAR = 'Cal-PersonChip__avatar';
+export const CAL_PERSON_NAME = 'Cal-PersonChip__name';
+export const CAL_PERSON_PEEK = 'Cal-PersonChip__peek';
+export const CAL_PERSON_CARD = 'Cal-PersonChip__card';
+export const CAL_PERSON_ROW = 'Cal-PersonChip__row';
+export const CAL_PERSON_LINK = 'Cal-PersonChip__link';
+export const CAL_PERSON_REMOVE = 'Cal-PersonChip__remove';
+export const CAL_PERSON_ICON = 'Cal-PersonChip__icon';
+export const BUTTON_TYPE = 'button' as const;
+export const INITIALS_LENGTH = 2;

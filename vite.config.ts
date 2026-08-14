@@ -4,6 +4,13 @@ import dts from 'vite-plugin-dts';
 import { resolve } from 'path';
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@constants': resolve(__dirname, 'src/constants/index.ts'),
+      '@utils': resolve(__dirname, 'src/utils/index.ts'),
+      '@hooks': resolve(__dirname, 'src/hooks/index.ts'),
+    },
+  },
   plugins: [
     react(),
     dts({ insertTypesEntry: true }),

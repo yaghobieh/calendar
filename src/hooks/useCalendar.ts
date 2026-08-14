@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { CalendarView, UseCalendarOptions, UseCalendarReturn } from '../types';
-import { DEFAULT_VIEW, NUMBER_ONE } from '../constants';
-import { shiftDate, startOfDay } from '../utils';
+import { DEFAULT_VIEW, NUMBER_ONE } from '@constants';
+import { shiftDate, startOfDay } from '@utils';
 
 export const useCalendar = (options: UseCalendarOptions = {}): UseCalendarReturn => {
   const {

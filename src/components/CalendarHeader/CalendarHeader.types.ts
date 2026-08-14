@@ -1,4 +1,10 @@
-import type { CalendarTranslations, CalendarView } from '../../types';
+import type {
+  CalendarLayoutIcons,
+  CalendarLayoutMode,
+  CalendarNavIcons,
+  CalendarTranslations,
+  CalendarView,
+} from '../../types';
 
 export interface CalendarHeaderProps {
   title: string;
@@ -8,4 +14,9 @@ export interface CalendarHeaderProps {
   onNext: () => void;
   onToday: () => void;
   onViewChange: (view: CalendarView) => void;
+  navIcons?: CalendarNavIcons;
+  layout?: CalendarLayoutMode;
+  layoutIcons?: CalendarLayoutIcons;
+  showLayoutToggle?: boolean;
+  onLayoutToggle?: () => void;
 }

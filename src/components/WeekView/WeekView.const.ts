@@ -1,9 +1,11 @@
 export const CAL_WEEK = 'Cal-WeekView';
 export const CAL_WEEK_HEADER = 'Cal-WeekView__header';
 export const CAL_WEEK_ALLDAY = 'Cal-WeekView__allday';
+export const CAL_WEEK_STAGE = 'Cal-WeekView__stage';
 export const CAL_WEEK_BODY = 'Cal-WeekView__body';
 export const CAL_WEEK_GUTTER = 'Cal-WeekView__gutter';
 export const CAL_WEEK_DAY = 'Cal-WeekView__day';
+export const CAL_WEEK_DAY_TODAY = 'Cal-WeekView__day--today';
 export const CAL_WEEK_SLOT = 'Cal-WeekView__slot';
 export const CAL_WEEK_COLUMNS = 'Cal-WeekView__columns';
 export const CAL_WEEK_COLUMN = 'Cal-WeekView__column';

@@ -14,11 +14,11 @@ import {
   DEFAULT_LOCALE,
   NUMBER_ONE,
   NUMBER_ZERO,
-} from '../../constants';
-import { addDays, eventsForDay, startOfDay } from '../../utils';
+} from '@constants';
+import { addDays, eventsForDay, slotDataAttrs, startOfDay } from '@utils';
 
 export function AgendaView(props: AgendaViewProps) {
-  const { date, events, noEvents, onEventClick, onSlotClick } = props;
+  const { date, events, noEvents, onEventClick, onSlotClick, joinMeeting } = props;
   const start = startOfDay(date);
   const days: Date[] = [];
   for (let index = NUMBER_ZERO; index < AGENDA_DAY_COUNT; index += NUMBER_ONE) {
@@ -34,6 +34,7 @@ export function AgendaView(props: AgendaViewProps) {
           <div
             key={day.toISOString()}
             className={CAL_AGENDA_GROUP}
+            {...slotDataAttrs(dayStart, SLOT_ALL_DAY)}
             onClick={() =>
               onSlotClick?.({
                 start: dayStart,
@@ -50,7 +51,7 @@ export function AgendaView(props: AgendaViewProps) {
             ) : (
               <div className={CAL_AGENDA_LIST}>
                 {dayEvents.map((event) => (
-                  <EventChip key={event.id} event={event} onEventClick={onEventClick} />
+                  <EventChip key={event.id} event={event} onEventClick={onEventClick} joinMeeting={joinMeeting} />
                 ))}
               </div>
             )}
