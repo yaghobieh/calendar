@@ -1289,17 +1289,19 @@
   .Cal-CalendarHeader__nav,
   .Cal-CalendarHeader__views {
     justify-content: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
   }
 
   .Cal-CalendarHeader__navBtn,
   .Cal-CalendarHeader__view {
-    min-height: 2.75rem;
+    min-height: 2.5rem;
+    flex-shrink: 0;
   }
 
   .Cal-MonthView__cell {
-    min-height: 4.25rem;
-    padding: 0.25rem;
+    min-height: 3.5rem;
+    padding: 0.2rem;
   }
 
   .Cal-MonthView__weekday {
