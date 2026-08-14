@@ -11,7 +11,7 @@ export interface UseEventResizeOptions {
 
 export const useEventResize = (options: UseEventResizeOptions) => {
   const { event, enabled, onEventChange } = options;
-  const chipRef = useRef<HTMLButtonElement | null>(null);
+  const chipRef = useRef<HTMLDivElement | null>(null);
   const skipClickRef = useRef(false);
   const [heightPx, setHeightPx] = useState<number | undefined>(undefined);
   const [resizing, setResizing] = useState(false);

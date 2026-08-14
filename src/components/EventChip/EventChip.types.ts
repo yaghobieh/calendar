@@ -10,4 +10,5 @@ export interface EventChipProps {
   onEventChange?: (event: CalendarEvent) => void;
   resizable?: boolean;
   style?: CSSProperties;
+  joinMeeting?: string;
 }

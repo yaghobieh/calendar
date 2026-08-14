@@ -58,6 +58,7 @@ export interface CalendarEvent {
   recurrence?: CalendarRecurrence;
   subtitle?: string;
   severity?: CalendarEventSeverity;
+  meetingUrl?: string;
 }
 
 export interface CalendarRecurrence {
@@ -91,6 +92,7 @@ export interface CalendarTranslations {
   endTimeLabel: string;
   inviteLabel: string;
   invitePlaceholder: string;
+  joinMeeting: string;
   emailLabel: string;
   phoneLabel: string;
   linkedinLabel: string;
@@ -108,6 +110,9 @@ export interface CalendarTranslations {
   untitled: string;
   expandLayout: string;
   collapseLayout: string;
+  markBusy: string;
+  openEvent: string;
+  busyDay: string;
   weekdays: string[];
 }
 
@@ -115,6 +120,17 @@ export interface CalendarSlot {
   start: Date;
   end: Date;
   allDay: boolean;
+}
+
+export interface CalendarContextMenuPayload {
+  type: 'slot' | 'event';
+  slot?: CalendarSlot;
+  event?: CalendarEvent;
+  clientX: number;
+  clientY: number;
+  openCreate: () => void;
+  openEvent: () => void;
+  markBusy: () => void;
 }
 
 export interface CalendarNavIcons {
@@ -218,6 +234,7 @@ export interface CalendarProps {
   onEventChange?: (event: CalendarEvent) => void;
   onEventCreate?: (event: CalendarEvent) => void;
   onSlotClick?: (slot: CalendarSlot) => void;
+  onContextMenu?: (payload: CalendarContextMenuPayload) => void;
   firstDayOfWeek?: FirstDayOfWeek;
   translations?: Partial<CalendarTranslations>;
   mode?: CalendarMode;
@@ -287,4 +304,5 @@ export interface CalendarViewBaseProps {
   resizable?: boolean;
   relationVisible?: CalendarRelationVisibility;
   activeEventId?: string;
+  joinMeeting?: string;
 }

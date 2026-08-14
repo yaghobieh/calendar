@@ -30,11 +30,12 @@ import {
   isSameDay,
   isSameMonth,
   joinClassNames,
+  slotDataAttrs,
   startOfDay,
 } from '@utils';
 
 export function MonthView(props: MonthViewProps) {
-  const { date, events, firstDayOfWeek, weekdays, onEventClick, onSlotClick, relationVisible, activeEventId } = props;
+  const { date, events, firstDayOfWeek, weekdays, onEventClick, onSlotClick, relationVisible, activeEventId, joinMeeting } = props;
   const today = new Date();
   const cells = getMonthGrid(date, firstDayOfWeek);
   const weekdayLabels = [
@@ -68,6 +69,7 @@ export function MonthView(props: MonthViewProps) {
                 isToday ? CAL_MONTH_CELL_TODAY : undefined,
                 isOther ? CAL_MONTH_CELL_OTHER : undefined,
               )}
+              {...slotDataAttrs(dayStart, SLOT_ALL_DAY)}
               onClick={() =>
                 onSlotClick?.({
                   start: dayStart,
@@ -86,6 +88,7 @@ export function MonthView(props: MonthViewProps) {
                     event={event}
                     variant={VARIANT_CHIP}
                     onEventClick={onEventClick}
+                    joinMeeting={joinMeeting}
                   />
                 ))}
                 {hiddenCount > NUMBER_ZERO ? (

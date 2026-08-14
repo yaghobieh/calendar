@@ -39,12 +39,24 @@ import {
   CAL_POPOVER_ACCENT,
   CAL_POPOVER_SUBTITLE,
   CAL_POPOVER_SEVERITY,
-  CAL_POPOVER_SUGGEST,
   CAL_POPOVER_SUGGEST_ITEM,
   CAL_POPOVER_SUGGEST_META,
   CAL_POPOVER_TEXTAREA,
   CAL_POPOVER_TITLE,
   CAL_POPOVER_TITLE_ID,
+  CAL_POPOVER_JOIN,
+  CAL_POPOVER_DROPDOWN,
+  CAL_POPOVER_DROPDOWN_OPEN,
+  CAL_POPOVER_DROPDOWN_TRIGGER,
+  CAL_POPOVER_DROPDOWN_MENU,
+  CAL_POPOVER_DROPDOWN_CHEVRON,
+  CAL_POPOVER_FIELD_GROW,
+  TARGET_BLANK,
+  REL_NOOPENER,
+  ROLE_LISTBOX,
+  ROLE_OPTION,
+  ARIA_HASPOPUP_LISTBOX,
+  AUTOCOMPLETE_OFF,
   FIELD_ALL_DAY,
   FIELD_END,
   FIELD_NOTES,
@@ -107,6 +119,12 @@ const DefaultCloseIcon = () => (
   </svg>
 );
 
+const DropdownChevron = () => (
+  <svg viewBox="0 0 24 24" className={CAL_POPOVER_DROPDOWN_CHEVRON} aria-hidden="true">
+    <path d="m6 9 6 6 6-6" />
+  </svg>
+);
+
 export function EventPopover(props: EventPopoverProps) {
   const {
     event,
@@ -140,11 +158,14 @@ export function EventPopover(props: EventPopoverProps) {
   const [closing, setClosing] = useState(false);
   const [relatedQuery, setRelatedQuery] = useState(EMPTY_STRING);
   const [inviteQuery, setInviteQuery] = useState(EMPTY_STRING);
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const [relatedOpen, setRelatedOpen] = useState(false);
   const [form, setForm] = useState<EventEditFormState>(() => formFromEvent(event));
   const assignedPeople = peopleForEvent(event, people);
   const relatedEvents = eventsForIds(events, event.relatedTo ?? []);
   const relatedChoices = relationCandidates(events, event.id, form.relatedTo);
   const relatedMatches = filterEventsByQuery(relatedChoices, relatedQuery);
+  const inviteMatches = filterPeopleByQuery(people, form.peopleIds, inviteQuery);
   const isCalendarContained = containment === MODAL_CONTAINMENT_CALENDAR;
   const showField = (field: Parameters<typeof isEditFieldEnabled>[1]) => isEditFieldEnabled(fields, field);
   const effectClass = modalEffectClassName(closing ? MODAL_PHASE_CLOSE : MODAL_PHASE_OPEN, closing ? closeEffect : openEffect);
@@ -212,6 +233,16 @@ export function EventPopover(props: EventPopoverProps) {
     }
     applyForm({ ...form, relatedTo: [...form.relatedTo, id] });
     setRelatedQuery(EMPTY_STRING);
+  };
+
+  const toggleInviteOpen = () => {
+    setInviteOpen((open) => !open);
+    setRelatedOpen(false);
+  };
+
+  const toggleRelatedOpen = () => {
+    setRelatedOpen((open) => !open);
+    setInviteOpen(false);
   };
 
   const handleRelatedInput = (value: string) => {
@@ -396,31 +427,45 @@ export function EventPopover(props: EventPopoverProps) {
               ))}
             </div>
           ) : null}
-          <input
-            className={CAL_POPOVER_INPUT}
-            type={INPUT_TEXT}
-            value={inviteQuery}
-            placeholder={translations.invitePlaceholder}
-            onChange={(change: ChangeEvent<HTMLInputElement>) => setInviteQuery(change.target.value)}
-          />
-          {filterPeopleByQuery(people, form.peopleIds, inviteQuery).length > NUMBER_ZERO ? (
-            <div className={CAL_POPOVER_SUGGEST}>
-              {filterPeopleByQuery(people, form.peopleIds, inviteQuery).map((person) => (
-                <button
-                  key={person.id}
-                  type={BUTTON_TYPE}
-                  className={CAL_POPOVER_SUGGEST_ITEM}
-                  onClick={() => {
-                    applyForm({ ...form, peopleIds: [...form.peopleIds, person.id] });
-                    setInviteQuery(EMPTY_STRING);
-                  }}
-                >
-                  <span>{person.name}</span>
-                  {person.email ? <span className={CAL_POPOVER_SUGGEST_META}>{person.email}</span> : null}
-                </button>
-              ))}
-            </div>
-          ) : null}
+          <div className={joinClassNames(CAL_POPOVER_DROPDOWN, inviteOpen ? CAL_POPOVER_DROPDOWN_OPEN : undefined)}>
+            <button
+              type={BUTTON_TYPE}
+              className={CAL_POPOVER_DROPDOWN_TRIGGER}
+              aria-expanded={inviteOpen}
+              aria-haspopup={ARIA_HASPOPUP_LISTBOX}
+              onClick={toggleInviteOpen}
+            >
+              <span>{translations.invitePlaceholder}</span>
+              <DropdownChevron />
+            </button>
+            {inviteOpen ? (
+              <div className={CAL_POPOVER_DROPDOWN_MENU} role={ROLE_LISTBOX}>
+                <input
+                  className={CAL_POPOVER_INPUT}
+                  type={INPUT_TEXT}
+                  value={inviteQuery}
+                  autoComplete={AUTOCOMPLETE_OFF}
+                  placeholder={translations.invitePlaceholder}
+                  onChange={(change: ChangeEvent<HTMLInputElement>) => setInviteQuery(change.target.value)}
+                />
+                {inviteMatches.map((person) => (
+                  <button
+                    key={person.id}
+                    type={BUTTON_TYPE}
+                    role={ROLE_OPTION}
+                    className={CAL_POPOVER_SUGGEST_ITEM}
+                    onClick={() => {
+                      applyForm({ ...form, peopleIds: [...form.peopleIds, person.id] });
+                      setInviteQuery(EMPTY_STRING);
+                    }}
+                  >
+                    <span>{person.name}</span>
+                    {person.email ? <span className={CAL_POPOVER_SUGGEST_META}>{person.email}</span> : null}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
         </div>
       ) : null}
       {showField(FIELD_RELATED_TO) ? (
@@ -448,32 +493,46 @@ export function EventPopover(props: EventPopoverProps) {
               ))}
             </div>
           ) : null}
-          <input
-            className={CAL_POPOVER_INPUT}
-            type={INPUT_TEXT}
-            value={relatedQuery}
-            placeholder={translations.relatedToPlaceholder}
-            onChange={(change: ChangeEvent<HTMLInputElement>) => handleRelatedInput(change.target.value)}
-            onKeyDown={handleRelatedKeyDown}
-          />
-          {relatedMatches.length > NUMBER_ZERO ? (
-            <div className={CAL_POPOVER_SUGGEST}>
-              {relatedMatches.map((item) => (
-                <button
-                  key={item.id}
-                  type={BUTTON_TYPE}
-                  className={CAL_POPOVER_SUGGEST_ITEM}
-                  onClick={() => addRelated(item.id)}
-                >
-                  {item.title}
-                </button>
-              ))}
-            </div>
-          ) : null}
+          <div className={joinClassNames(CAL_POPOVER_DROPDOWN, relatedOpen ? CAL_POPOVER_DROPDOWN_OPEN : undefined)}>
+            <button
+              type={BUTTON_TYPE}
+              className={CAL_POPOVER_DROPDOWN_TRIGGER}
+              aria-expanded={relatedOpen}
+              aria-haspopup={ARIA_HASPOPUP_LISTBOX}
+              onClick={toggleRelatedOpen}
+            >
+              <span>{translations.relatedToPlaceholder}</span>
+              <DropdownChevron />
+            </button>
+            {relatedOpen ? (
+              <div className={CAL_POPOVER_DROPDOWN_MENU} role={ROLE_LISTBOX}>
+                <input
+                  className={CAL_POPOVER_INPUT}
+                  type={INPUT_TEXT}
+                  value={relatedQuery}
+                  autoComplete={AUTOCOMPLETE_OFF}
+                  placeholder={translations.relatedToPlaceholder}
+                  onChange={(change: ChangeEvent<HTMLInputElement>) => handleRelatedInput(change.target.value)}
+                  onKeyDown={handleRelatedKeyDown}
+                />
+                {relatedMatches.map((item) => (
+                  <button
+                    key={item.id}
+                    type={BUTTON_TYPE}
+                    role={ROLE_OPTION}
+                    className={CAL_POPOVER_SUGGEST_ITEM}
+                    onClick={() => addRelated(item.id)}
+                  >
+                    {item.title}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
         </div>
       ) : null}
       {showField(FIELD_NOTES) ? (
-        <label className={CAL_POPOVER_FIELD}>
+        <label className={joinClassNames(CAL_POPOVER_FIELD, CAL_POPOVER_FIELD_GROW)}>
           <span className={CAL_POPOVER_LABEL}>{translations.notesLabel}</span>
           <textarea
             className={CAL_POPOVER_TEXTAREA}
@@ -562,6 +621,16 @@ export function EventPopover(props: EventPopoverProps) {
             <div className={CAL_POPOVER_CONTENT}>
               <p className={CAL_POPOVER_META}>{formatCompactRange(event)}</p>
               {live ? <p className={CAL_POPOVER_LIVE}>{translations.happeningNow}</p> : null}
+              {event.meetingUrl ? (
+                <a
+                  className={CAL_POPOVER_JOIN}
+                  href={event.meetingUrl}
+                  target={TARGET_BLANK}
+                  rel={REL_NOOPENER}
+                >
+                  {translations.joinMeeting}
+                </a>
+              ) : null}
               {assignedPeople.length > NUMBER_ZERO ? (
                 <div className={CAL_POPOVER_PEOPLE}>
                   {assignedPeople.map((person) => (

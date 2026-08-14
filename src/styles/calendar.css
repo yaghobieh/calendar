@@ -387,6 +387,16 @@
   color: var(--cal-muted);
 }
 
+.Cal-EventChipWrap {
+  display: block;
+  width: 100%;
+}
+
+.Cal-EventChipWrap--block {
+  position: absolute;
+  z-index: 3;
+}
+
 .Cal-EventChip {
   position: relative;
   z-index: 3;
@@ -408,12 +418,54 @@
 }
 
 .Cal-EventChip--block {
-  position: absolute;
+  position: relative;
   z-index: 3;
+  width: 100%;
+  height: 100%;
   align-items: flex-start;
   border-radius: 0 4px 4px 0;
   padding: 2px 6px 10px 8px;
   box-shadow: inset 3px 0 0 0 rgba(255, 255, 255, 0.85);
+}
+
+.Cal-EventChip__peek {
+  position: fixed;
+  z-index: 240;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 14rem;
+  max-width: 20rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 0.65rem;
+  background: var(--cal-bg);
+  color: var(--cal-text);
+  border: 1px solid var(--cal-border);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.22);
+  pointer-events: auto;
+}
+
+.Cal-EventChip__peekTitle {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.Cal-EventChip__peekMeta {
+  font-size: 0.75rem;
+  color: var(--cal-muted);
+}
+
+.Cal-EventChip__peekJoin {
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cal-primary);
+  text-decoration: none;
+}
+
+.Cal-EventChip__peekJoin:hover {
+  text-decoration: underline;
 }
 
 .Cal-EventChip--resizing {
@@ -581,17 +633,17 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: min(22.5rem, calc(100% - 2rem));
+  width: min(44rem, calc(100% - 2rem));
   height: auto;
-  max-height: min(70vh, 28rem);
+  max-height: min(78vh, 42rem);
   transform: translate(-50%, -50%);
   perspective: 1400px;
 }
 
 .Cal-EventPopover__scene--edit {
-  width: min(34rem, calc(100% - 2rem));
-  height: min(84vh, 40rem);
-  max-height: min(84vh, 40rem);
+  width: min(56rem, calc(100% - 1.5rem));
+  height: min(92vh, 54rem);
+  max-height: min(92vh, 54rem);
 }
 
 .Cal-EventPopover__flip {
@@ -600,6 +652,10 @@
   height: auto;
   transform-style: preserve-3d;
   transition: transform 0.65s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.Cal-EventPopover__scene--edit .Cal-EventPopover__flip {
+  height: 100%;
 }
 
 .Cal-EventPopover__flip--edit {
@@ -619,7 +675,11 @@
   box-shadow: 0 12px 36px rgba(15, 23, 42, 0.2);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  max-height: min(70vh, 28rem);
+  max-height: min(78vh, 42rem);
+}
+
+.Cal-EventPopover__face--view .Cal-EventPopover__content {
+  flex: 0 0 auto;
 }
 
 .Cal-EventPopover__face--edit {
@@ -627,7 +687,13 @@
   inset: 0;
   overflow: hidden;
   transform: rotateY(180deg);
-  max-height: min(84vh, 40rem);
+  max-height: none;
+}
+
+.Cal-EventPopover__scene--edit .Cal-EventPopover__face--view {
+  position: absolute;
+  inset: 0;
+  max-height: none;
 }
 
 .Cal-EventPopover__accent {
@@ -678,6 +744,13 @@
   color: var(--cal-text);
 }
 
+.Cal-EventPopover__scene--edit .Cal-EventPopover__face--edit .Cal-EventPopover__content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .Cal-EventPopover__body {
   margin-top: 0.65rem;
   color: var(--cal-text);
@@ -706,8 +779,8 @@
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  width: min(36rem, calc(100% - 2rem));
-  max-height: min(86vh, 40rem);
+  width: min(44rem, calc(100% - 2rem));
+  max-height: min(86vh, 42rem);
   overflow: auto;
   padding: 1.25rem 1.5rem 1.5rem;
   border-radius: 1rem;
@@ -780,6 +853,19 @@
   font-weight: 600;
 }
 
+.Cal-EventPopover__join {
+  display: inline-flex;
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--cal-primary);
+  text-decoration: none;
+}
+
+.Cal-EventPopover__join:hover {
+  text-decoration: underline;
+}
+
 .Cal-EventPopover .Ink-Editor,
 .Cal-EventPopover .Ink-Editor[data-chrome='borderless'] {
   --ink-bg: transparent;
@@ -794,6 +880,12 @@
   box-shadow: none;
 }
 
+.Cal-EventPopover__scene--edit .Ink-Editor {
+  flex: 1;
+  min-height: 12rem;
+  height: 100%;
+}
+
 .Cal-EventPopover__body .Ink-Editor,
 .Cal-EventPopover__body .Ink-Editor__surface,
 .Cal-EventPopover__body .Ink-Editor__content {
@@ -801,19 +893,45 @@
   color: var(--cal-text);
 }
 
-.Cal-EventPopover__form {
+.Cal-EventPopover__form,
+.Cal-EventEditForm {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   margin-top: 0;
   flex: 1;
   min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.Cal-EventEditForm__notes {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.Cal-EventEditForm__notes .Ink-Editor {
+  flex: 1;
+  min-height: 12rem;
+  height: 100%;
 }
 
 .Cal-EventPopover__field {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+}
+
+.Cal-EventPopover__field--grow {
+  flex: 1;
+  min-height: 0;
+}
+
+.Cal-EventPopover__field--grow .Cal-EventPopover__textarea {
+  flex: 1;
+  min-height: 12rem;
 }
 
 .Cal-EventPopover__label {
@@ -904,12 +1022,75 @@
   color: var(--cal-muted);
 }
 
+.Cal-EventPopover__dropdown {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  z-index: 6;
+}
+
+.Cal-EventPopover__dropdownTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  border: 1px solid var(--cal-border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  background: var(--cal-bg);
+  color: var(--cal-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.Cal-EventPopover__dropdownChevron {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.15s ease;
+}
+
+.Cal-EventPopover__dropdown--open .Cal-EventPopover__dropdownChevron {
+  transform: rotate(180deg);
+}
+
+.Cal-EventPopover__dropdownMenu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 0.25rem);
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  max-height: 12rem;
+  overflow: auto;
+  border: 1px solid var(--cal-border);
+  border-radius: 0.75rem;
+  padding: 0.35rem;
+  background: var(--cal-bg);
+  color: var(--cal-text);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+}
+
 .Cal-EventPopover__footer {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
   margin-top: auto;
-  padding-top: 1rem;
+  padding: 0.85rem 0 0;
+  flex-shrink: 0;
+  position: relative;
+  background: var(--cal-modal-body-bg, var(--cal-bg));
+  z-index: 5;
 }
 
 .Cal-EventPopover__cancel,
@@ -1088,7 +1269,13 @@
 
   .Cal-EventPopover__scene {
     width: calc(100% - 1rem);
+    height: auto;
+    max-height: min(92dvh, 100%);
+  }
+
+  .Cal-EventPopover__scene--edit {
     height: min(92dvh, 100%);
+    max-height: min(92dvh, 100%);
   }
 
   .Cal-EventPopover__face {

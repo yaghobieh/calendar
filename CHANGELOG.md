@@ -5,17 +5,21 @@ All notable changes to Forge Calendar will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] — 1.0.1
+## [1.0.1] — Unreleased
 
 ### Added
 
+- Hover popover on event chips (title, subtitle, time, Join meeting), portaled so it is not clipped
+- `meetingUrl` on events; Join meeting in the peek and the view popup
+- Invite and relation as overlay dropdowns that list remaining options
+- Right-click payload `onContextMenu` with Create event, Mark as busy day, and Open event actions
 - Drag the bottom of timed week/day events to resize; duration snaps to 15 minutes and saves through `onEventChange`
 - Event popup flips from view to edit like a card
 - `layout` / `defaultLayout` `'contained' | 'fullPage'` with a header toggle and `layoutIcons`
 - `eventModal.containment` `'page' | 'calendar'` for where the popup is bounded
 - Mobile header, month cells, week scroll, and full-width popup
 - Relation lines (`relatedTo`) with `relations.visible` `'always' | 'onClick' | 'never'`
-- Edit **Relation with** field; in-flow search list (no portaled overlay)
+- Edit **Relation with** field; overlay search list (no portaled overlay inside the 3D flip)
 - `editModal.fields` to show or hide title, start, end, allDay, people, notes, relatedTo, recurrence
 - Recurrence on events: daily, weekly at this time, monthly, every X months, yearly
 - Start/end time fields (hidden when all day); people invite copy via `translations.inviteLabel`
@@ -29,8 +33,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Click popup is a wider Outlook-style card that hugs title, time, people, and notes
+- Edit and create use a full-size card; notes and Ink fill the remaining space; Save/Cancel stay in the footer
 - Today is a primary date badge instead of a solid mint cell fill
-- Event click popup is a compact Outlook-style card (accent bar, title, subtitle, time, people, description)
 - Invite copy via `translations.inviteLabel` / `invitePlaceholder`
 - Happening-now uses `--cal-primary` instead of orange
 - Notes in the popup follow calendar light/dark tokens (no black Ink box in light mode)

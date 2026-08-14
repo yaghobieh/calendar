@@ -34,10 +34,11 @@ import {
   positionTimedEvents,
   startOfDay,
   startOfHour,
+  slotDataAttrs,
 } from '@utils';
 
 export function DayView(props: DayViewProps) {
-  const { date, events, onEventClick, onEventChange, onSlotClick, resizable } = props;
+  const { date, events, onEventClick, onEventChange, onSlotClick, resizable, joinMeeting } = props;
   const hours = hourLabels();
   const dayStart = startOfDay(date);
   const isToday = isSameDay(date, new Date());
@@ -52,6 +53,7 @@ export function DayView(props: DayViewProps) {
       </div>
       <div
         className={joinClassNames(CAL_DAY_ALLDAY, CAL_TIME_GRID_ALLDAY)}
+        {...slotDataAttrs(dayStart, SLOT_ALL_DAY)}
         onClick={() =>
           onSlotClick?.({
             start: dayStart,
@@ -63,7 +65,7 @@ export function DayView(props: DayViewProps) {
         <div className={CAL_DAY_GUTTER} />
         <div className={CAL_DAY_DAY}>
           {allDayEventsForDay(events, dayStart).map((event) => (
-            <EventChip key={event.id} event={event} onEventClick={onEventClick} />
+            <EventChip key={event.id} event={event} onEventClick={onEventClick} joinMeeting={joinMeeting} />
           ))}
         </div>
       </div>
@@ -79,6 +81,7 @@ export function DayView(props: DayViewProps) {
                 <div
                   key={hour}
                   className={joinClassNames(CAL_DAY_SLOT, CAL_TIME_GRID_SLOT)}
+                  {...slotDataAttrs(start, SLOT_TIMED)}
                   onClick={() =>
                     onSlotClick?.({
                       start,
@@ -94,6 +97,7 @@ export function DayView(props: DayViewProps) {
               onEventClick={onEventClick}
               onEventChange={onEventChange}
               resizable={resizable}
+              joinMeeting={joinMeeting}
             />
           </div>
         </div>

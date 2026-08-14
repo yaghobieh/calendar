@@ -37,10 +37,11 @@ import {
   positionTimedEvents,
   startOfDay,
   startOfHour,
+  slotDataAttrs,
 } from '@utils';
 
 export function WeekView(props: WeekViewProps) {
-  const { date, events, firstDayOfWeek, onEventClick, onEventChange, onSlotClick, resizable, relationVisible, activeEventId } = props;
+  const { date, events, firstDayOfWeek, onEventClick, onEventChange, onSlotClick, resizable, relationVisible, activeEventId, joinMeeting } = props;
   const days = getWeekDays(date, firstDayOfWeek);
   const hours = hourLabels();
   const today = new Date();
@@ -66,6 +67,7 @@ export function WeekView(props: WeekViewProps) {
             <div
               key={day.toISOString()}
               className={CAL_WEEK_DAY}
+              {...slotDataAttrs(dayStart, SLOT_ALL_DAY)}
               onClick={() =>
                 onSlotClick?.({
                   start: dayStart,
@@ -75,7 +77,7 @@ export function WeekView(props: WeekViewProps) {
               }
             >
               {allDayEventsForDay(events, day).map((event) => (
-                <EventChip key={event.id} event={event} onEventClick={onEventClick} />
+                <EventChip key={event.id} event={event} onEventClick={onEventClick} joinMeeting={joinMeeting} />
               ))}
             </div>
           );
@@ -97,6 +99,7 @@ export function WeekView(props: WeekViewProps) {
                   <div
                     key={hour}
                     className={joinClassNames(CAL_WEEK_SLOT, CAL_TIME_GRID_SLOT)}
+                    {...slotDataAttrs(start, SLOT_TIMED)}
                     onClick={() =>
                       onSlotClick?.({
                         start,
@@ -112,6 +115,7 @@ export function WeekView(props: WeekViewProps) {
                 onEventClick={onEventClick}
                 onEventChange={onEventChange}
                 resizable={resizable}
+                joinMeeting={joinMeeting}
               />
             </div>
           ))}

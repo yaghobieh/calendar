@@ -14,6 +14,7 @@ export type {
   CalendarTranslations,
   EventEditActions,
   CalendarSlot,
+  CalendarContextMenuPayload,
   CalendarNavIcons,
   CalendarTheme,
   CalendarEventModalConfig,

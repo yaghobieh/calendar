@@ -173,12 +173,9 @@ export const formatEventRange = formatCompactRange;
 
 export const filterEventsByQuery = (events: CalendarEvent[], query: string): CalendarEvent[] => {
   const needle = query.trim().toLowerCase();
-  if (needle.length === NUMBER_ZERO) {
-    return [];
-  }
   const matched: CalendarEvent[] = [];
   for (let index = NUMBER_ZERO; index < events.length; index += NUMBER_ONE) {
-    if (events[index].title.toLowerCase().includes(needle)) {
+    if (needle.length === NUMBER_ZERO || events[index].title.toLowerCase().includes(needle)) {
       matched.push(events[index]);
     }
   }

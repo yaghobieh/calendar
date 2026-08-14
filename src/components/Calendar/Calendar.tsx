@@ -1,4 +1,4 @@
-import { useState, type KeyboardEvent } from 'react';
+import { useState, type KeyboardEvent, type MouseEvent } from 'react';
 import type { CalendarEvent, CalendarLayoutMode, CalendarProps, CalendarSlot } from '../../types';
 import { CalendarHeader } from '../CalendarHeader';
 import { MonthView } from '../MonthView';
@@ -38,13 +38,17 @@ import {
 } from '@constants';
 import { useCalendar } from '@hooks';
 import {
+  createBusyEvent,
   expandRecurringEvents,
   joinClassNames,
   normalizeEvents,
+  parseContextMenuTarget,
   resolveCalendarConfig,
   resolveModalEffects,
   resolveSeriesEvent,
   seriesIdFromEventId,
+  startOfDay,
+  addDays,
   themeToCssVars,
   visibleRangeForView,
 } from '@utils';
@@ -66,6 +70,7 @@ export function Calendar(props: CalendarProps) {
     onEventChange,
     onEventCreate,
     onSlotClick,
+    onContextMenu,
     firstDayOfWeek = DEFAULT_FIRST_DAY,
     translations,
     mode,
@@ -167,6 +172,13 @@ export function Calendar(props: CalendarProps) {
     onEventChange?.(next);
   };
 
+  const openCreateFromSlot = (slot: CalendarSlot) => {
+    const draft = createDraftEvent(slot, EMPTY_STRING);
+    setIsCreate(true);
+    setOpenEvent(draft);
+    upsertLocalEvent(draft);
+  };
+
   const handleSlotClick = (slot: CalendarSlot) => {
     onSlotClick?.(slot);
     if (calendar.view !== VIEW_MONTH) {
@@ -175,10 +187,47 @@ export function Calendar(props: CalendarProps) {
     if (resolved.eventModal?.createOnSlot === false) {
       return;
     }
-    const draft = createDraftEvent(slot, EMPTY_STRING);
-    setIsCreate(true);
-    setOpenEvent(draft);
-    upsertLocalEvent(draft);
+    openCreateFromSlot(slot);
+  };
+
+  const markBusyDay = (slot: CalendarSlot) => {
+    const busy = createBusyEvent(slot, labels.busyDay);
+    upsertLocalEvent(busy);
+    onEventCreate?.(busy);
+  };
+
+  const handleRootContextMenu = (nativeEvent: MouseEvent<HTMLDivElement>) => {
+    if (!onContextMenu) {
+      return;
+    }
+    const parsed = parseContextMenuTarget(nativeEvent.target, mergedEvents);
+    const dayStart = startOfDay(calendar.date);
+    const fallbackSlot: CalendarSlot = {
+      start: dayStart,
+      end: addDays(dayStart, NUMBER_ONE),
+      allDay: true,
+    };
+    const slot = parsed?.slot ?? fallbackSlot;
+    const clicked = parsed?.event;
+    onContextMenu({
+      type: parsed?.type ?? 'slot',
+      slot,
+      event: clicked,
+      clientX: nativeEvent.clientX,
+      clientY: nativeEvent.clientY,
+      openCreate: () => {
+        openCreateFromSlot(slot);
+      },
+      openEvent: () => {
+        if (!clicked) {
+          return;
+        }
+        handleEventClick(clicked);
+      },
+      markBusy: () => {
+        markBusyDay(slot);
+      },
+    });
   };
 
   const handleLayoutToggle = () => {
@@ -220,6 +269,7 @@ export function Calendar(props: CalendarProps) {
       tabIndex={TAB_INDEX_ROOT}
       style={themeToCssVars(resolved.theme)}
       onKeyDown={handleKeyDown}
+      onContextMenu={handleRootContextMenu}
     >
       <CalendarHeader
         title={headerTitle(calendar.view, calendar.date, firstDayOfWeek)}
@@ -245,6 +295,7 @@ export function Calendar(props: CalendarProps) {
           onSlotClick={handleSlotClick}
           relationVisible={relationVisible}
           activeEventId={openEvent?.id}
+          joinMeeting={labels.joinMeeting}
         />
       )}
       {calendar.view === VIEW_WEEK && (
@@ -259,6 +310,7 @@ export function Calendar(props: CalendarProps) {
           resizable={resizable}
           relationVisible={relationVisible}
           activeEventId={openEvent?.id}
+          joinMeeting={labels.joinMeeting}
         />
       )}
       {calendar.view === VIEW_DAY && (
@@ -271,6 +323,7 @@ export function Calendar(props: CalendarProps) {
           onEventChange={handleEventChange}
           onSlotClick={onSlotClick}
           resizable={resizable}
+          joinMeeting={labels.joinMeeting}
         />
       )}
       {calendar.view === VIEW_AGENDA && (
@@ -282,6 +335,7 @@ export function Calendar(props: CalendarProps) {
           onEventClick={handleEventClick}
           onSlotClick={onSlotClick}
           noEvents={labels.noEvents}
+          joinMeeting={labels.joinMeeting}
         />
       )}
       {openEvent ? (

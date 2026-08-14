@@ -39,6 +39,7 @@ export const DEFAULT_TRANSLATIONS: CalendarTranslations = {
   endTimeLabel: 'End time',
   inviteLabel: 'Invite',
   invitePlaceholder: 'Search people to invite',
+  joinMeeting: 'Join meeting',
   emailLabel: 'Email',
   phoneLabel: 'Phone',
   linkedinLabel: 'LinkedIn',
@@ -56,5 +57,8 @@ export const DEFAULT_TRANSLATIONS: CalendarTranslations = {
   untitled: 'New event',
   expandLayout: 'Full page',
   collapseLayout: 'Exit full page',
+  markBusy: 'Mark as busy day',
+  openEvent: 'Open event',
+  busyDay: 'Busy',
   weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
 };

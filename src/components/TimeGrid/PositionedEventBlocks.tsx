@@ -23,7 +23,7 @@ const blockStyle = (
 };
 
 export function PositionedEventBlocks(props: PositionedEventBlocksProps) {
-  const { events, onEventClick, onEventChange, resizable } = props;
+  const { events, onEventClick, onEventChange, resizable, joinMeeting } = props;
 
   return (
     <>
@@ -35,6 +35,7 @@ export function PositionedEventBlocks(props: PositionedEventBlocksProps) {
           onEventClick={onEventClick}
           onEventChange={onEventChange}
           resizable={resizable}
+          joinMeeting={joinMeeting}
           style={blockStyle(
             positioned.topPercent,
             positioned.heightPercent,

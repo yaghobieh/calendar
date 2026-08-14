@@ -5,4 +5,5 @@ export interface PositionedEventBlocksProps {
   onEventClick?: (event: CalendarEvent) => void;
   onEventChange?: (event: CalendarEvent) => void;
   resizable?: boolean;
+  joinMeeting?: string;
 }

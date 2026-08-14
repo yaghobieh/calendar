@@ -27,7 +27,12 @@ export const MODAL_EFFECT_SLIDE_UP = 'slideUp';
 export const MODAL_EFFECT_NONE = 'none';
 
 export const DRAFT_ID_PREFIX = 'cal-new-';
+export const BUSY_ID_PREFIX = 'cal-busy-';
 export const OCCURRENCE_ID_SEP = '__occ__';
+export const ATTR_CAL_EVENT = 'data-cal-event';
+export const ATTR_CAL_SLOT = 'data-cal-slot';
+export const ATTR_CAL_ALL_DAY = 'data-cal-all-day';
+export const ATTR_TRUE = 'true';
 
 export const RECURRENCE_NONE = 'none';
 export const RECURRENCE_DAILY = 'daily';

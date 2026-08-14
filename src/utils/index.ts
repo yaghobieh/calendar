@@ -44,3 +44,12 @@ export {
   visibleRangeForView,
   expandRecurringEvents,
 } from './recurrence.utils';
+
+export {
+  eventDataAttrs,
+  slotDataAttrs,
+  slotFromEvent,
+  slotFromIso,
+  createBusyEvent,
+  parseContextMenuTarget,
+} from './contextMenu.utils';
