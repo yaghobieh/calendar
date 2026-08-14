@@ -13,6 +13,7 @@ export type {
   CalendarPerson,
   CalendarPersonIcons,
   CalendarEventSeverity,
+  CalendarEventShowAs,
   CalendarSeverityIcons,
   CalendarRecurrence,
   CalendarTranslations,

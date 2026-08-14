@@ -1,4 +1,4 @@
-import { useState, type MouseEvent } from 'react';
+import { useLayoutEffect, useRef, useState, type MouseEvent } from 'react';
 import type { RelationPath, RelationRibbonsProps } from './RelationRibbons.types';
 import {
   CAL_RIBBONS,
@@ -13,7 +13,7 @@ import {
   SVG_VIEWBOX,
   TIP_OFFSET_PX,
 } from './RelationRibbons.const';
-import { relationPaths } from './RelationRibbons.utils';
+import { measureEventPoints, relationPaths } from './RelationRibbons.utils';
 import { NUMBER_ZERO } from '@constants';
 
 interface HoverTip {
@@ -24,8 +24,28 @@ interface HoverTip {
 
 export function RelationRibbons(props: RelationRibbonsProps) {
   const { cells, events, layout, visible, activeEventId } = props;
-  const paths = relationPaths(cells, events, layout, visible, activeEventId);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+  const [paths, setPaths] = useState<RelationPath[]>([]);
   const [hover, setHover] = useState<HoverTip | null>(null);
+
+  useLayoutEffect(() => {
+    const overlay = overlayRef.current;
+    if (!overlay) {
+      return;
+    }
+    const draw = () => {
+      const measured = measureEventPoints(overlay, events);
+      setPaths(relationPaths(cells, events, layout, visible, activeEventId, measured));
+    };
+    draw();
+    const parent = overlay.parentElement;
+    if (!parent || typeof ResizeObserver === 'undefined') {
+      return;
+    }
+    const observer = new ResizeObserver(draw);
+    observer.observe(parent);
+    return () => observer.disconnect();
+  }, [cells, events, layout, visible, activeEventId]);
 
   const handleMove = (path: RelationPath, mouseEvent: MouseEvent<SVGPathElement>) => {
     setHover({
@@ -36,11 +56,11 @@ export function RelationRibbons(props: RelationRibbonsProps) {
   };
 
   if (paths.length === NUMBER_ZERO) {
-    return null;
+    return <div ref={overlayRef} className={CAL_RIBBONS} />;
   }
 
   return (
-    <div className={CAL_RIBBONS}>
+    <div ref={overlayRef} className={CAL_RIBBONS}>
       <svg
         className={CAL_RIBBONS_SVG}
         viewBox={SVG_VIEWBOX}

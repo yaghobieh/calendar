@@ -7,6 +7,7 @@ import {
   BUSY_ID_PREFIX,
   NUMBER_ONE,
   NUMBER_ZERO,
+  SHOW_AS_BUSY,
 } from '@constants';
 import { addDays, startOfDay } from './date.utils';
 
@@ -53,6 +54,7 @@ export const createBusyEvent = (slot: CalendarSlot, title: string): CalendarEven
     start: dayStart,
     end: addDays(dayStart, NUMBER_ONE),
     allDay: true,
+    showAs: SHOW_AS_BUSY,
   };
 };
 

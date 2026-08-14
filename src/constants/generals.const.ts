@@ -45,6 +45,30 @@ export const CLOSE_GLYPH = '×';
 export const MODE_LIGHT = 'light';
 export const MODE_DARK = 'dark';
 
+export const SHOW_AS_FREE = 'free';
+export const SHOW_AS_BUSY = 'busy';
+export const SHOW_AS_TENTATIVE = 'tentative';
+export const SHOW_AS_OOF = 'oof';
+export const DEFAULT_SHOW_AS = SHOW_AS_BUSY;
+
+export const SEVERITY_NONE = 'none';
+export const SEVERITY_LOW = 'low';
+export const SEVERITY_NORMAL = 'normal';
+export const SEVERITY_HIGH = 'high';
+export const SEVERITY_URGENT = 'urgent';
+
+export const TIME_GRID_COLUMN_SELECTOR = '.Cal-TimeGrid__column';
+export const CAL_BG_VAR = '--cal-bg';
+export const CAL_TEXT_VAR = '--cal-text';
+export const CAL_BORDER_VAR = '--cal-border';
+export const CAL_MUTED_VAR = '--cal-muted';
+export const CAL_PRIMARY_VAR = '--cal-primary';
+export const PEEK_BG_FALLBACK = '#0f172a';
+export const PEEK_TEXT_FALLBACK = '#f8fafc';
+export const PEEK_BORDER_FALLBACK = 'rgba(148, 163, 184, 0.35)';
+export const PEEK_MUTED_FALLBACK = '#94a3b8';
+export const PEEK_PRIMARY_FALLBACK = '#14b8a6';
+
 export const KEY_ARROW_LEFT = 'ArrowLeft';
 export const KEY_ARROW_RIGHT = 'ArrowRight';
 export const KEY_ARROW_UP = 'ArrowUp';

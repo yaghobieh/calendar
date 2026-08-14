@@ -1,6 +1,6 @@
 import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import type { CalendarEvent, NormalizedEvent } from '../types';
-import { NUMBER_ZERO } from '@constants';
+import { NUMBER_ZERO, TIME_GRID_COLUMN_SELECTOR } from '@constants';
 import { eventWithEndFromHeight } from '@utils';
 
 export interface UseEventResizeOptions {
@@ -23,13 +23,13 @@ export const useEventResize = (options: UseEventResizeOptions) => {
     pointerEvent.preventDefault();
     pointerEvent.stopPropagation();
     const chip = chipRef.current;
-    const column = chip?.offsetParent as HTMLElement | null;
+    const column = chip?.closest(TIME_GRID_COLUMN_SELECTOR) as HTMLElement | null;
     if (!chip || !column) {
       return;
     }
     const startY = pointerEvent.clientY;
     const startHeight = chip.getBoundingClientRect().height;
-    const columnHeight = column.clientHeight;
+    const columnHeight = column.scrollHeight > NUMBER_ZERO ? column.scrollHeight : column.clientHeight;
     skipClickRef.current = true;
     setResizing(true);
     setHeightPx(startHeight);

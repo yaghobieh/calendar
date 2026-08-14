@@ -28,13 +28,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modal open/close effects: `fade`, `scale`, `slideUp`, `none` (`eventModal.openEffect` / `closeEffect`), overridable with CSS
 - People collection on `people`: `avatar`, `name`, `fullName`, `email`, `phone`, `linkedin`, `facebook`, `profileUrl`, `title`
 - Person chips: hover peek (name, avatar, email, phone) and click card with configurable `personIcons`
-- Event `subtitle` and `severity` (`none` | `low` | `normal` | `high` | `urgent`) with configurable `severityIcons`
+- Event `subtitle`, `severity` (`none` | `low` | `normal` | `high` | `urgent`), and `showAs` (`free` | `busy` | `tentative` | `oof`) with configurable `severityIcons`
 - Invite search dropdown (no checkboxes); relation ribbon hover shows both event titles and times
 
 ### Changed
 
-- Click popup is a wider Outlook-style card that hugs title, time, people, and notes
-- Edit and create use a full-size card; notes and Ink fill the remaining space; Save/Cancel stay in the footer
+- Click popup is a wider Outlook-style card; edit scrolls when content overflows and keeps Save/Cancel in the footer
+- Hover peek is a solid card above the calendar chrome (copied theme tokens so it is not transparent)
+- Relation lines connect event chips to event chips and use a thinner stroke
+- Timed week/day resize uses the time column height and hides the peek while dragging
+- Edit notes keep Ink HTML instead of stripping markup
 - Today is a primary date badge instead of a solid mint cell fill
 - Invite copy via `translations.inviteLabel` / `invitePlaceholder`
 - Happening-now uses `--cal-primary` instead of orange

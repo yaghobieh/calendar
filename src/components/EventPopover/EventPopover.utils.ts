@@ -11,14 +11,26 @@ import {
   PAD_ZERO,
   RECURRENCE_EVERY_X_MONTHS,
   RECURRENCE_NONE,
+  SEVERITY_HIGH,
+  SEVERITY_LOW,
+  SEVERITY_NONE,
+  SEVERITY_NORMAL,
+  SEVERITY_URGENT,
+  SHOW_AS_BUSY,
+  SHOW_AS_FREE,
+  SHOW_AS_OOF,
+  SHOW_AS_TENTATIVE,
   TIME_SEPARATOR,
 } from '@constants';
 import type {
   CalendarEditFieldsConfig,
   CalendarEvent,
+  CalendarEventSeverity,
+  CalendarEventShowAs,
   CalendarPerson,
   CalendarRecurrence,
   CalendarRecurrenceFreq,
+  CalendarTranslations,
 } from '../../types';
 import { RANGE_SEPARATOR } from './EventPopover.const';
 
@@ -85,6 +97,8 @@ export interface EventEditFormState {
   relatedTo: string[];
   recurrenceFreq: CalendarRecurrenceFreq;
   recurrenceInterval: number;
+  severity: CalendarEventSeverity;
+  showAs: CalendarEventShowAs;
 }
 
 export const formFromEvent = (event: CalendarEvent): EventEditFormState => ({
@@ -99,6 +113,8 @@ export const formFromEvent = (event: CalendarEvent): EventEditFormState => ({
   relatedTo: event.relatedTo ? [...event.relatedTo] : [],
   recurrenceFreq: event.recurrence?.freq ?? RECURRENCE_NONE,
   recurrenceInterval: event.recurrence?.interval ?? DEFAULT_RECURRENCE_INTERVAL,
+  severity: event.severity ?? SEVERITY_NONE,
+  showAs: event.showAs ?? SHOW_AS_BUSY,
 });
 
 export const eventFromForm = (
@@ -123,6 +139,8 @@ export const eventFromForm = (
     peopleIds: form.peopleIds,
     relatedTo: form.relatedTo,
     recurrence: recurrenceFromForm(form.recurrenceFreq, form.recurrenceInterval),
+    severity: form.severity,
+    showAs: form.showAs,
   };
 };
 
@@ -219,3 +237,39 @@ export const isEditFieldEnabled = (
 ): boolean => fields?.[field] !== false;
 
 export const relatedRemoveLabel = CLOSE_GLYPH;
+
+export const showAsLabel = (
+  translations: CalendarTranslations,
+  showAs?: CalendarEventShowAs,
+): string => {
+  if (showAs === SHOW_AS_FREE) {
+    return translations.showAsFree;
+  }
+  if (showAs === SHOW_AS_TENTATIVE) {
+    return translations.showAsTentative;
+  }
+  if (showAs === SHOW_AS_OOF) {
+    return translations.showAsOof;
+  }
+  return translations.showAsBusy;
+};
+
+export const severityLabel = (
+  translations: CalendarTranslations,
+  severity?: CalendarEventSeverity,
+): string => {
+  if (severity === SEVERITY_LOW) {
+    return translations.severityLow;
+  }
+  if (severity === SEVERITY_NORMAL) {
+    return translations.severityNormal;
+  }
+  if (severity === SEVERITY_HIGH) {
+    return translations.severityHigh;
+  }
+  if (severity === SEVERITY_URGENT) {
+    return translations.severityUrgent;
+  }
+  return translations.severityNone;
+};
+

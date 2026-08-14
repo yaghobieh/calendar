@@ -214,9 +214,11 @@
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
-  opacity: 0.7;
+  opacity: 0.75;
   pointer-events: stroke;
   cursor: pointer;
+  vector-effect: non-scaling-stroke;
+  stroke-width: 1.25px;
 }
 
 .Cal-RelationRibbons__tip {
@@ -271,6 +273,14 @@
   flex-direction: column;
   min-height: 0;
   flex: 1;
+}
+
+.Cal-WeekView__stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 
 .Cal-WeekView__header,
@@ -430,19 +440,52 @@
 
 .Cal-EventChip__peek {
   position: fixed;
-  z-index: 240;
+  z-index: 2147483000;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  min-width: 14rem;
-  max-width: 20rem;
-  padding: 0.7rem 0.85rem;
-  border-radius: 0.65rem;
-  background: var(--cal-bg);
-  color: var(--cal-text);
-  border: 1px solid var(--cal-border);
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.22);
+  gap: 0.3rem;
+  width: max-content;
+  min-width: 16rem;
+  max-width: 22rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  background: #0f172a;
+  background: var(--cal-bg, #0f172a);
+  color: #f8fafc;
+  color: var(--cal-text, #f8fafc);
+  border: 1px solid var(--cal-border, rgba(148, 163, 184, 0.35));
+  box-shadow: 0 18px 48px rgba(2, 6, 23, 0.55);
   pointer-events: auto;
+  transform: translateY(calc(-100% - 0.5rem));
+  animation: cal-peek-in 0.16s ease both;
+}
+
+@keyframes cal-peek-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(-100% - 0.15rem)) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(calc(-100% - 0.5rem)) scale(1);
+  }
+}
+
+.Cal-EventChip__peek--below {
+  transform: translateY(0.5rem);
+  animation-name: cal-peek-in-below;
+}
+
+@keyframes cal-peek-in-below {
+  from {
+    opacity: 0;
+    transform: translateY(0.15rem) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0.5rem) scale(1);
+  }
 }
 
 .Cal-EventChip__peekTitle {
@@ -477,7 +520,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 0.5rem;
+  height: 0.85rem;
+  z-index: 6;
   cursor: ns-resize;
   touch-action: none;
 }
@@ -633,9 +677,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: min(44rem, calc(100% - 2rem));
-  height: auto;
-  max-height: min(78vh, 42rem);
+  width: min(52rem, calc(100% - 1.5rem));
+  height: min(84vh, 50rem);
+  max-height: min(84vh, 50rem);
   transform: translate(-50%, -50%);
   perspective: 1400px;
 }
@@ -649,7 +693,7 @@
 .Cal-EventPopover__flip {
   position: relative;
   width: 100%;
-  height: auto;
+  height: 100%;
   transform-style: preserve-3d;
   transition: transform 0.65s cubic-bezier(0.4, 0.2, 0.2, 1);
 }
@@ -666,7 +710,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  overflow: visible;
+  overflow: hidden;
+  height: 100%;
   padding: 0 0 0 0.35rem;
   border-radius: 0.75rem;
   background: var(--cal-modal-body-bg, var(--cal-bg));
@@ -675,11 +720,13 @@
   box-shadow: 0 12px 36px rgba(15, 23, 42, 0.2);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  max-height: min(78vh, 42rem);
+  max-height: 100%;
 }
 
 .Cal-EventPopover__face--view .Cal-EventPopover__content {
-  flex: 0 0 auto;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
 }
 
 .Cal-EventPopover__face--edit {
@@ -751,16 +798,26 @@
   overflow: hidden;
 }
 
+.Cal-EventPopover__scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
 .Cal-EventPopover__body {
   margin-top: 0.65rem;
   color: var(--cal-text);
   background: color-mix(in srgb, var(--cal-text) 4%, var(--cal-bg));
   border: 1px solid var(--cal-border);
   border-radius: 0.5rem;
-  padding: 0.5rem 0.7rem;
-  font-size: 0.8125rem;
-  line-height: 1.4;
-  max-height: 6.5rem;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  flex: 1;
+  min-height: 20rem;
   overflow: auto;
 }
 
@@ -779,8 +836,8 @@
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  width: min(44rem, calc(100% - 2rem));
-  max-height: min(86vh, 42rem);
+  width: min(52rem, calc(100% - 1.5rem));
+  max-height: min(84vh, 50rem);
   overflow: auto;
   padding: 1.25rem 1.5rem 1.5rem;
   border-radius: 1rem;
@@ -842,7 +899,8 @@
 }
 
 .Cal-EventPopover__meta,
-.Cal-EventPopover__live {
+.Cal-EventPopover__live,
+.Cal-EventPopover__showAs {
   margin: 0.35rem 0 0;
   font-size: 0.8125rem;
   color: var(--cal-muted);
@@ -882,7 +940,7 @@
 
 .Cal-EventPopover__scene--edit .Ink-Editor {
   flex: 1;
-  min-height: 12rem;
+  min-height: 20rem;
   height: 100%;
 }
 
@@ -907,14 +965,15 @@
 
 .Cal-EventEditForm__notes {
   flex: 1;
-  min-height: 0;
+  min-height: 20rem;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .Cal-EventEditForm__notes .Ink-Editor {
   flex: 1;
-  min-height: 12rem;
+  min-height: 20rem;
   height: 100%;
 }
 
@@ -931,7 +990,7 @@
 
 .Cal-EventPopover__field--grow .Cal-EventPopover__textarea {
   flex: 1;
-  min-height: 12rem;
+  min-height: 20rem;
 }
 
 .Cal-EventPopover__label {

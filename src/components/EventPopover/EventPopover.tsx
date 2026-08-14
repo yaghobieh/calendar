@@ -1,5 +1,5 @@
 import { useState, type AnimationEvent, type ChangeEvent, type FormEvent, type KeyboardEvent } from 'react';
-import type { CalendarEvent, CalendarRecurrenceFreq } from '../../types';
+import type { CalendarEvent, CalendarEventSeverity, CalendarRecurrenceFreq } from '../../types';
 import type { EventPopoverProps } from './EventPopover.types';
 import {
   BUTTON_TYPE,
@@ -37,6 +37,8 @@ import {
   CAL_POPOVER_SCENE,
   CAL_POPOVER_SCENE_EDIT,
   CAL_POPOVER_ACCENT,
+  CAL_POPOVER_SCROLL,
+  CAL_POPOVER_SHOW_AS,
   CAL_POPOVER_SUBTITLE,
   CAL_POPOVER_SEVERITY,
   CAL_POPOVER_SUGGEST_ITEM,
@@ -63,6 +65,8 @@ import {
   FIELD_PEOPLE,
   FIELD_RECURRENCE,
   FIELD_RELATED_TO,
+  FIELD_SEVERITY,
+  FIELD_SHOW_AS,
   FIELD_START,
   FIELD_TITLE,
   INPUT_CHECKBOX,
@@ -84,6 +88,8 @@ import {
   peopleForEvent,
   relatedRemoveLabel,
   relationCandidates,
+  severityLabel,
+  showAsLabel,
 } from './EventPopover.utils';
 import type { EventEditFormState } from './EventPopover.utils';
 import {
@@ -100,6 +106,15 @@ import {
   RECURRENCE_NONE,
   RECURRENCE_WEEKLY,
   RECURRENCE_YEARLY,
+  SEVERITY_HIGH,
+  SEVERITY_LOW,
+  SEVERITY_NONE,
+  SEVERITY_NORMAL,
+  SEVERITY_URGENT,
+  SHOW_AS_BUSY,
+  SHOW_AS_FREE,
+  SHOW_AS_OOF,
+  SHOW_AS_TENTATIVE,
 } from '@constants';
 import { PersonChip } from '../PersonChip';
 import { DEFAULT_SEVERITY_ICONS } from './EventPopover.icons';
@@ -134,6 +149,7 @@ export function EventPopover(props: EventPopoverProps) {
     events = [],
     fields,
     isCreate = false,
+    renderEventBody,
     renderEventEdit,
     editIcon,
     closeIcon,
@@ -294,6 +310,7 @@ export function EventPopover(props: EventPopoverProps) {
     renderEventEdit(event, editActions)
   ) : (
     <form className={CAL_POPOVER_FORM} onSubmit={handleSubmit}>
+      <div className={CAL_POPOVER_SCROLL}>
       {showField(FIELD_TITLE) ? (
         <label className={CAL_POPOVER_FIELD}>
           <span className={CAL_POPOVER_LABEL}>{translations.titleLabel}</span>
@@ -531,6 +548,41 @@ export function EventPopover(props: EventPopoverProps) {
           </div>
         </div>
       ) : null}
+      {showField(FIELD_SHOW_AS) ? (
+        <label className={CAL_POPOVER_FIELD}>
+          <span className={CAL_POPOVER_LABEL}>{translations.showAsLabel}</span>
+          <select
+            className={CAL_POPOVER_INPUT}
+            value={form.showAs}
+            onChange={(change: ChangeEvent<HTMLSelectElement>) =>
+              applyForm({ ...form, showAs: change.target.value as EventEditFormState['showAs'] })
+            }
+          >
+            <option value={SHOW_AS_BUSY}>{translations.showAsBusy}</option>
+            <option value={SHOW_AS_FREE}>{translations.showAsFree}</option>
+            <option value={SHOW_AS_TENTATIVE}>{translations.showAsTentative}</option>
+            <option value={SHOW_AS_OOF}>{translations.showAsOof}</option>
+          </select>
+        </label>
+      ) : null}
+      {showField(FIELD_SEVERITY) ? (
+        <label className={CAL_POPOVER_FIELD}>
+          <span className={CAL_POPOVER_LABEL}>{translations.severityLabel}</span>
+          <select
+            className={CAL_POPOVER_INPUT}
+            value={form.severity}
+            onChange={(change: ChangeEvent<HTMLSelectElement>) =>
+              applyForm({ ...form, severity: change.target.value as CalendarEventSeverity })
+            }
+          >
+            <option value={SEVERITY_NONE}>{translations.severityNone}</option>
+            <option value={SEVERITY_LOW}>{translations.severityLow}</option>
+            <option value={SEVERITY_NORMAL}>{translations.severityNormal}</option>
+            <option value={SEVERITY_HIGH}>{translations.severityHigh}</option>
+            <option value={SEVERITY_URGENT}>{translations.severityUrgent}</option>
+          </select>
+        </label>
+      ) : null}
       {showField(FIELD_NOTES) ? (
         <label className={joinClassNames(CAL_POPOVER_FIELD, CAL_POPOVER_FIELD_GROW)}>
           <span className={CAL_POPOVER_LABEL}>{translations.notesLabel}</span>
@@ -544,6 +596,7 @@ export function EventPopover(props: EventPopoverProps) {
           />
         </label>
       ) : null}
+      </div>
       <div className={CAL_POPOVER_FOOTER}>
         {showCancel ? (
           <button type={BUTTON_TYPE} className={CAL_POPOVER_CANCEL} onClick={handleCancelEdit}>
@@ -563,9 +616,8 @@ export function EventPopover(props: EventPopoverProps) {
   const severityMark = event.severity
     ? { ...DEFAULT_SEVERITY_ICONS, ...severityIcons }[event.severity]
     : null;
-  const descriptionText = event.description
-    ? event.description.replace(/<[^>]+>/g, EMPTY_STRING).trim()
-    : EMPTY_STRING;
+  const notesBody = renderEventBody?.(event);
+  const descriptionText = event.description ?? EMPTY_STRING;
 
   return (
     <div
@@ -620,6 +672,14 @@ export function EventPopover(props: EventPopoverProps) {
             </div>
             <div className={CAL_POPOVER_CONTENT}>
               <p className={CAL_POPOVER_META}>{formatCompactRange(event)}</p>
+              <p className={CAL_POPOVER_SHOW_AS}>
+                {translations.showAsLabel}: {showAsLabel(translations, event.showAs)}
+              </p>
+              {event.severity && event.severity !== SEVERITY_NONE ? (
+                <p className={CAL_POPOVER_META}>
+                  {translations.severityLabel}: {severityLabel(translations, event.severity)}
+                </p>
+              ) : null}
               {live ? <p className={CAL_POPOVER_LIVE}>{translations.happeningNow}</p> : null}
               {event.meetingUrl ? (
                 <a
@@ -652,7 +712,9 @@ export function EventPopover(props: EventPopoverProps) {
                   ))}
                 </div>
               ) : null}
-              {descriptionText.length > NUMBER_ZERO ? (
+              {notesBody ? (
+                <div className={CAL_POPOVER_BODY}>{notesBody}</div>
+              ) : descriptionText.length > NUMBER_ZERO ? (
                 <div className={CAL_POPOVER_BODY}>{descriptionText}</div>
               ) : null}
             </div>

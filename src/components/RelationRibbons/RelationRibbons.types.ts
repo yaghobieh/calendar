@@ -2,6 +2,11 @@ import type { CalendarRelationVisibility, NormalizedEvent } from '../../types';
 
 export type RelationLayout = 'month' | 'week';
 
+export interface RibbonPoint {
+  x: number;
+  y: number;
+}
+
 export interface RelationPath {
   id: string;
   d: string;

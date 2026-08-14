@@ -73,3 +73,7 @@ export const FIELD_PEOPLE = 'people';
 export const FIELD_NOTES = 'notes';
 export const FIELD_RELATED_TO = 'relatedTo';
 export const FIELD_RECURRENCE = 'recurrence';
+export const FIELD_SEVERITY = 'severity';
+export const FIELD_SHOW_AS = 'showAs';
+export const CAL_POPOVER_SCROLL = 'Cal-EventPopover__scroll';
+export const CAL_POPOVER_SHOW_AS = 'Cal-EventPopover__showAs';

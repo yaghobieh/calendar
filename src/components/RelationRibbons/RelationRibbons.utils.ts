@@ -1,5 +1,6 @@
 import type { CalendarRelationVisibility, NormalizedEvent } from '../../types';
 import {
+  ATTR_CAL_EVENT,
   DAYS_IN_WEEK,
   DEFAULT_LOCALE,
   HOUR_LABEL_PAD,
@@ -8,6 +9,7 @@ import {
   MONTH_GRID_WEEKS,
   NUMBER_ONE,
   NUMBER_ONE_HUNDRED,
+  NUMBER_TWO,
   NUMBER_ZERO,
   PAD_ZERO,
   RELATION_VISIBLE_ALWAYS,
@@ -29,7 +31,7 @@ import {
   LAYOUT_MONTH,
   PAIR_SEP,
 } from './RelationRibbons.const';
-import type { RelationLayout, RelationPath } from './RelationRibbons.types';
+import type { RelationLayout, RelationPath, RibbonPoint } from './RelationRibbons.types';
 
 const pad = (value: number): string => String(value).padStart(HOUR_LABEL_PAD, PAD_ZERO);
 
@@ -87,12 +89,40 @@ const ribbonPath = (x1: number, y1: number, x2: number, y2: number): string => {
 const pairKey = (left: string, right: string): string =>
   left < right ? `${left}${PAIR_SEP}${right}` : `${right}${PAIR_SEP}${left}`;
 
+export const measureEventPoints = (
+  overlay: HTMLElement,
+  events: NormalizedEvent[],
+): Map<string, RibbonPoint> => {
+  const overlayRect = overlay.getBoundingClientRect();
+  const width = overlayRect.width;
+  const height = overlayRect.height;
+  const points = new Map<string, RibbonPoint>();
+  if (width <= NUMBER_ZERO || height <= NUMBER_ZERO) {
+    return points;
+  }
+  const scope = overlay.parentElement ?? overlay;
+  for (let index = NUMBER_ZERO; index < events.length; index += NUMBER_ONE) {
+    const event = events[index];
+    const node = scope.querySelector(`[${ATTR_CAL_EVENT}="${CSS.escape(event.id)}"]`);
+    if (!(node instanceof HTMLElement)) {
+      continue;
+    }
+    const rect = node.getBoundingClientRect();
+    points.set(event.id, {
+      x: ((rect.left + rect.width / NUMBER_TWO - overlayRect.left) / width) * NUMBER_ONE_HUNDRED,
+      y: ((rect.top + rect.height / NUMBER_TWO - overlayRect.top) / height) * NUMBER_ONE_HUNDRED,
+    });
+  }
+  return points;
+};
+
 export const relationPaths = (
   cells: Date[],
   events: NormalizedEvent[],
   layout: RelationLayout,
   visible: CalendarRelationVisibility = RELATION_VISIBLE_ALWAYS,
   activeEventId?: string,
+  measured?: Map<string, RibbonPoint>,
 ): RelationPath[] => {
   if (visible === RELATION_VISIBLE_NEVER) {
     return [];
@@ -162,12 +192,16 @@ export const relationPaths = (
           continue;
         }
         seen.add(key);
+        const measuredFrom = measured?.get(event.id);
+        const measuredTo = measured?.get(target.id);
         const from =
-          layout === LAYOUT_MONTH
+          measuredFrom ??
+          (layout === LAYOUT_MONTH
             ? pointForMonth(fromIndex)
-            : pointForWeek(fromIndex, event, columns);
+            : pointForWeek(fromIndex, event, columns));
         const to =
-          layout === LAYOUT_MONTH ? pointForMonth(toIndex) : pointForWeek(toIndex, target, columns);
+          measuredTo ??
+          (layout === LAYOUT_MONTH ? pointForMonth(toIndex) : pointForWeek(toIndex, target, columns));
         paths.push({
           id: key,
           d: ribbonPath(from.x, from.y, to.x, to.y),

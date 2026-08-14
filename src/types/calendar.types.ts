@@ -8,6 +8,7 @@ export type CalendarModalContainment = 'calendar' | 'page';
 export type CalendarRelationVisibility = 'always' | 'onClick' | 'never';
 export type CalendarModalEffect = 'fade' | 'scale' | 'slideUp' | 'none';
 export type CalendarEventSeverity = 'none' | 'low' | 'normal' | 'high' | 'urgent';
+export type CalendarEventShowAs = 'free' | 'busy' | 'tentative' | 'oof';
 export type CalendarRecurrenceFreq =
   | 'none'
   | 'daily'
@@ -58,6 +59,7 @@ export interface CalendarEvent {
   recurrence?: CalendarRecurrence;
   subtitle?: string;
   severity?: CalendarEventSeverity;
+  showAs?: CalendarEventShowAs;
   meetingUrl?: string;
 }
 
@@ -113,6 +115,17 @@ export interface CalendarTranslations {
   markBusy: string;
   openEvent: string;
   busyDay: string;
+  showAsLabel: string;
+  showAsFree: string;
+  showAsBusy: string;
+  showAsTentative: string;
+  showAsOof: string;
+  severityLabel: string;
+  severityNone: string;
+  severityLow: string;
+  severityNormal: string;
+  severityHigh: string;
+  severityUrgent: string;
   weekdays: string[];
 }
 
@@ -190,6 +203,8 @@ export interface CalendarEditFieldsConfig {
   notes?: boolean;
   relatedTo?: boolean;
   recurrence?: boolean;
+  severity?: boolean;
+  showAs?: boolean;
 }
 
 export interface CalendarEditModalConfig {

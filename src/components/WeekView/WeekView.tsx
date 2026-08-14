@@ -18,6 +18,7 @@ import {
   CAL_WEEK_GUTTER,
   CAL_WEEK_HEADER,
   CAL_WEEK_SLOT,
+  CAL_WEEK_STAGE,
   SLOT_ALL_DAY,
   SLOT_TIMED,
 } from './WeekView.const';
@@ -59,6 +60,7 @@ export function WeekView(props: WeekViewProps) {
           </div>
         ))}
       </div>
+      <div className={CAL_WEEK_STAGE}>
       <div className={joinClassNames(CAL_WEEK_ALLDAY, CAL_TIME_GRID_ALLDAY)}>
         <div className={CAL_WEEK_GUTTER} />
         {days.map((day) => {
@@ -116,17 +118,18 @@ export function WeekView(props: WeekViewProps) {
                 onEventChange={onEventChange}
                 resizable={resizable}
                 joinMeeting={joinMeeting}
-              />
-            </div>
-          ))}
-          <RelationRibbons
-            layout={LAYOUT_WEEK}
-            cells={days}
-            events={events}
-            visible={relationVisible}
-            activeEventId={activeEventId}
-          />
+            />
+          </div>
+        ))}
         </div>
+      </div>
+      <RelationRibbons
+        layout={LAYOUT_WEEK}
+        cells={days}
+        events={events}
+        visible={relationVisible}
+        activeEventId={activeEventId}
+      />
       </div>
     </div>
   );

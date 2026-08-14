@@ -6,6 +6,7 @@ import {
   NUMBER_ONE,
   NUMBER_ZERO,
   ROOT_ID_FALLBACK,
+  SHOW_AS_BUSY,
   VIEW_DAY,
   VIEW_WEEK,
 } from '@constants';
@@ -77,4 +78,5 @@ export const createDraftEvent = (slot: CalendarSlot, title: string): CalendarEve
   start: slot.start,
   end: slot.end,
   allDay: slot.allDay,
+  showAs: SHOW_AS_BUSY,
 });
