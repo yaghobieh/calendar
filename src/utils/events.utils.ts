@@ -7,7 +7,7 @@ import {
   NUMBER_ONE,
   NUMBER_ONE_HUNDRED,
   NUMBER_ZERO,
-} from '../constants';
+} from '@constants';
 import { addDays, startOfDay, toDate } from './date.utils';
 
 export const normalizeEvent = (event: CalendarEvent): NormalizedEvent | null => {
@@ -61,20 +61,44 @@ export const allDayEventsForDay = (events: NormalizedEvent[], day: Date): Normal
 export const timedEventsForDay = (events: NormalizedEvent[], day: Date): NormalizedEvent[] =>
   eventsForDay(events, day).filter((event) => !event.allDay);
 
-export const positionTimedEvents = (events: NormalizedEvent[], day: Date): PositionedEvent[] => {
-  const dayStart = startOfDay(day);
-  const dayEnd = addDays(dayStart, NUMBER_ONE);
-  const totalMinutes = HOURS_IN_DAY * MINUTES_IN_HOUR;
-  const timed = timedEventsForDay(events, day)
-    .filter((event) => event.start < dayEnd && event.end > dayStart)
-    .sort((left, right) => left.start.getTime() - right.start.getTime());
+export const isEventHappeningNow = (event: NormalizedEvent, now: Date = new Date()): boolean =>
+  event.start.getTime() <= now.getTime() && event.end.getTime() > now.getTime();
 
-  const columnEnds: Date[] = [];
-  const columnIndexes: number[] = [];
+const splitOverlapClusters = (timed: NormalizedEvent[]): NormalizedEvent[][] => {
+  const clusters: NormalizedEvent[][] = [];
+  let current: NormalizedEvent[] = [];
+  let clusterEnd = NUMBER_ZERO;
 
   for (let index = NUMBER_ZERO; index < timed.length; index += NUMBER_ONE) {
     const event = timed[index];
-    let columnIndex = columnEnds.length;
+    if (current.length === NUMBER_ZERO || event.start.getTime() < clusterEnd) {
+      current.push(event);
+      clusterEnd = Math.max(clusterEnd, event.end.getTime());
+      continue;
+    }
+    clusters.push(current);
+    current = [event];
+    clusterEnd = event.end.getTime();
+  }
+
+  if (current.length > NUMBER_ZERO) {
+    clusters.push(current);
+  }
+
+  return clusters;
+};
+
+const positionCluster = (
+  cluster: NormalizedEvent[],
+  dayStart: Date,
+  totalMinutes: number,
+): PositionedEvent[] => {
+  const columnEnds: Date[] = [];
+  const columnIndexes: number[] = [];
+
+  for (let index = NUMBER_ZERO; index < cluster.length; index += NUMBER_ONE) {
+    const event = cluster[index];
+    let columnIndex = NUMBER_ZERO;
     let placed = false;
     for (let column = NUMBER_ZERO; column < columnEnds.length; column += NUMBER_ONE) {
       if (columnEnds[column].getTime() <= event.start.getTime()) {
@@ -85,6 +109,7 @@ export const positionTimedEvents = (events: NormalizedEvent[], day: Date): Posit
       }
     }
     if (!placed) {
+      columnIndex = columnEnds.length;
       columnEnds.push(event.end);
     }
     columnIndexes.push(columnIndex);
@@ -93,8 +118,8 @@ export const positionTimedEvents = (events: NormalizedEvent[], day: Date): Posit
   const columnCount = Math.max(columnEnds.length, NUMBER_ONE);
   const positioned: PositionedEvent[] = [];
 
-  for (let index = NUMBER_ZERO; index < timed.length; index += NUMBER_ONE) {
-    const event = timed[index];
+  for (let index = NUMBER_ZERO; index < cluster.length; index += NUMBER_ONE) {
+    const event = cluster[index];
     const startMinutes = Math.max(
       NUMBER_ZERO,
       (event.start.getTime() - dayStart.getTime()) / MS_IN_MINUTE,
@@ -112,5 +137,30 @@ export const positionTimedEvents = (events: NormalizedEvent[], day: Date): Posit
     });
   }
 
+  return positioned;
+};
+
+export const positionTimedEvents = (events: NormalizedEvent[], day: Date): PositionedEvent[] => {
+  const dayStart = startOfDay(day);
+  const dayEnd = addDays(dayStart, NUMBER_ONE);
+  const totalMinutes = HOURS_IN_DAY * MINUTES_IN_HOUR;
+  const timed = timedEventsForDay(events, day)
+    .filter((event) => event.start < dayEnd && event.end > dayStart)
+    .sort((left, right) => {
+      const startDiff = left.start.getTime() - right.start.getTime();
+      if (startDiff !== NUMBER_ZERO) {
+        return startDiff;
+      }
+      return right.end.getTime() - left.end.getTime();
+    });
+
+  const clusters = splitOverlapClusters(timed);
+  const positioned: PositionedEvent[] = [];
+  for (let index = NUMBER_ZERO; index < clusters.length; index += NUMBER_ONE) {
+    const clusterPositions = positionCluster(clusters[index], dayStart, totalMinutes);
+    for (let item = NUMBER_ZERO; item < clusterPositions.length; item += NUMBER_ONE) {
+      positioned.push(clusterPositions[item]);
+    }
+  }
   return positioned;
 };

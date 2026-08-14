@@ -13,7 +13,7 @@ import {
   PAD_ZERO,
   TIME_SEPARATOR,
   ZERO_MINUTES_LABEL,
-} from '../constants';
+} from '@constants';
 import {
   addDays,
   getMonthGrid,
