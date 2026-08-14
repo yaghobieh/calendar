@@ -14,39 +14,46 @@ import {
   CAL_WEEK_COLUMN,
   CAL_WEEK_COLUMNS,
   CAL_WEEK_DAY,
+  CAL_WEEK_DAY_TODAY,
   CAL_WEEK_GUTTER,
   CAL_WEEK_HEADER,
   CAL_WEEK_SLOT,
-  PERCENT_UNIT,
   SLOT_ALL_DAY,
   SLOT_TIMED,
 } from './WeekView.const';
-import { VARIANT_BLOCK } from '../EventChip/EventChip.const';
 import { EventChip } from '../EventChip';
-import { NUMBER_ONE, NUMBER_ONE_HUNDRED } from '../../constants';
+import { RelationRibbons } from '../RelationRibbons';
+import { LAYOUT_WEEK } from '../RelationRibbons/RelationRibbons.const';
+import { PositionedEventBlocks, TimeGutterHours } from '../TimeGrid';
+import { NUMBER_ONE } from '@constants';
 import {
   addDays,
   allDayEventsForDay,
   formatDayHeading,
   getWeekDays,
+  isSameDay,
   hourLabels,
   joinClassNames,
   positionTimedEvents,
   startOfDay,
   startOfHour,
-} from '../../utils';
+} from '@utils';
 
 export function WeekView(props: WeekViewProps) {
-  const { date, events, firstDayOfWeek, onEventClick, onSlotClick } = props;
+  const { date, events, firstDayOfWeek, onEventClick, onEventChange, onSlotClick, resizable, relationVisible, activeEventId } = props;
   const days = getWeekDays(date, firstDayOfWeek);
   const hours = hourLabels();
+  const today = new Date();
 
   return (
     <div className={joinClassNames(CAL_WEEK, CAL_TIME_GRID)}>
       <div className={joinClassNames(CAL_WEEK_HEADER, CAL_TIME_GRID_HEADER)}>
         <div className={CAL_WEEK_GUTTER} />
         {days.map((day) => (
-          <div key={day.toISOString()} className={CAL_WEEK_DAY}>
+          <div
+            key={day.toISOString()}
+            className={joinClassNames(CAL_WEEK_DAY, isSameDay(day, today) ? CAL_WEEK_DAY_TODAY : undefined)}
+          >
             {formatDayHeading(day)}
           </div>
         ))}
@@ -76,11 +83,7 @@ export function WeekView(props: WeekViewProps) {
       </div>
       <div className={joinClassNames(CAL_WEEK_BODY, CAL_TIME_GRID_BODY)}>
         <div className={joinClassNames(CAL_WEEK_GUTTER, CAL_TIME_GRID_GUTTER)}>
-          {hours.map((label, hourIndex) => (
-            <div key={hourIndex} className={CAL_TIME_GRID_SLOT}>
-              {label}
-            </div>
-          ))}
+          <TimeGutterHours hours={hours} slotClassName={CAL_TIME_GRID_SLOT} />
         </div>
         <div className={joinClassNames(CAL_WEEK_COLUMNS, CAL_TIME_GRID_COLUMNS)}>
           {days.map((day) => (
@@ -104,22 +107,21 @@ export function WeekView(props: WeekViewProps) {
                   />
                 );
               })}
-              {positionTimedEvents(events, day).map((positioned) => (
-                <EventChip
-                  key={positioned.event.id}
-                  event={positioned.event}
-                  variant={VARIANT_BLOCK}
-                  onEventClick={onEventClick}
-                  style={{
-                    top: `${positioned.topPercent}${PERCENT_UNIT}`,
-                    height: `${positioned.heightPercent}${PERCENT_UNIT}`,
-                    left: `${(positioned.columnIndex / positioned.columnCount) * NUMBER_ONE_HUNDRED}${PERCENT_UNIT}`,
-                    width: `${NUMBER_ONE_HUNDRED / positioned.columnCount}${PERCENT_UNIT}`,
-                  }}
-                />
-              ))}
+              <PositionedEventBlocks
+                events={positionTimedEvents(events, day)}
+                onEventClick={onEventClick}
+                onEventChange={onEventChange}
+                resizable={resizable}
+              />
             </div>
           ))}
+          <RelationRibbons
+            layout={LAYOUT_WEEK}
+            cells={days}
+            events={events}
+            visible={relationVisible}
+            activeEventId={activeEventId}
+          />
         </div>
       </div>
     </div>

@@ -20,7 +20,10 @@
     "typeRoots": ["./node_modules/@types"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@constants": ["./src/constants/index.ts"],
+      "@utils": ["./src/utils/index.ts"],
+      "@hooks": ["./src/hooks/index.ts"]
     }
   },
   "include": ["src"],

@@ -14,8 +14,8 @@ import {
   DEFAULT_LOCALE,
   NUMBER_ONE,
   NUMBER_ZERO,
-} from '../../constants';
-import { addDays, eventsForDay, startOfDay } from '../../utils';
+} from '@constants';
+import { addDays, eventsForDay, startOfDay } from '@utils';
 
 export function AgendaView(props: AgendaViewProps) {
   const { date, events, noEvents, onEventClick, onSlotClick } = props;

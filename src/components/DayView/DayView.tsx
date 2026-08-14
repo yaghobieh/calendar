@@ -6,6 +6,7 @@ import {
   CAL_DAY_COLUMN,
   CAL_DAY_COLUMNS,
   CAL_DAY_DAY,
+  CAL_DAY_DAY_TODAY,
   CAL_DAY_GUTTER,
   CAL_DAY_HEADER,
   CAL_DAY_SLOT,
@@ -17,34 +18,37 @@ import {
   CAL_TIME_GRID_GUTTER,
   CAL_TIME_GRID_HEADER,
   CAL_TIME_GRID_SLOT,
-  PERCENT_UNIT,
   SLOT_ALL_DAY,
   SLOT_TIMED,
 } from './DayView.const';
-import { VARIANT_BLOCK } from '../EventChip/EventChip.const';
 import { EventChip } from '../EventChip';
-import { NUMBER_ONE, NUMBER_ONE_HUNDRED } from '../../constants';
+import { PositionedEventBlocks, TimeGutterHours } from '../TimeGrid';
+import { NUMBER_ONE } from '@constants';
 import {
   addDays,
   allDayEventsForDay,
   formatDayHeading,
   hourLabels,
+  isSameDay,
   joinClassNames,
   positionTimedEvents,
   startOfDay,
   startOfHour,
-} from '../../utils';
+} from '@utils';
 
 export function DayView(props: DayViewProps) {
-  const { date, events, onEventClick, onSlotClick } = props;
+  const { date, events, onEventClick, onEventChange, onSlotClick, resizable } = props;
   const hours = hourLabels();
   const dayStart = startOfDay(date);
+  const isToday = isSameDay(date, new Date());
 
   return (
     <div className={joinClassNames(CAL_DAY, CAL_TIME_GRID)}>
       <div className={joinClassNames(CAL_DAY_HEADER, CAL_TIME_GRID_HEADER)}>
         <div className={CAL_DAY_GUTTER} />
-        <div className={CAL_DAY_DAY}>{formatDayHeading(date)}</div>
+        <div className={joinClassNames(CAL_DAY_DAY, isToday ? CAL_DAY_DAY_TODAY : undefined)}>
+          {formatDayHeading(date)}
+        </div>
       </div>
       <div
         className={joinClassNames(CAL_DAY_ALLDAY, CAL_TIME_GRID_ALLDAY)}
@@ -58,18 +62,14 @@ export function DayView(props: DayViewProps) {
       >
         <div className={CAL_DAY_GUTTER} />
         <div className={CAL_DAY_DAY}>
-          {allDayEventsForDay(events, date).map((event) => (
+          {allDayEventsForDay(events, dayStart).map((event) => (
             <EventChip key={event.id} event={event} onEventClick={onEventClick} />
           ))}
         </div>
       </div>
       <div className={joinClassNames(CAL_DAY_BODY, CAL_TIME_GRID_BODY)}>
         <div className={joinClassNames(CAL_DAY_GUTTER, CAL_TIME_GRID_GUTTER)}>
-          {hours.map((label, hourIndex) => (
-            <div key={hourIndex} className={CAL_TIME_GRID_SLOT}>
-              {label}
-            </div>
-          ))}
+          <TimeGutterHours hours={hours} slotClassName={CAL_TIME_GRID_SLOT} />
         </div>
         <div className={joinClassNames(CAL_DAY_COLUMNS, CAL_TIME_GRID_COLUMNS)}>
           <div className={joinClassNames(CAL_DAY_COLUMN, CAL_TIME_GRID_COLUMN)}>
@@ -89,20 +89,12 @@ export function DayView(props: DayViewProps) {
                 />
               );
             })}
-            {positionTimedEvents(events, date).map((positioned) => (
-              <EventChip
-                key={positioned.event.id}
-                event={positioned.event}
-                variant={VARIANT_BLOCK}
-                onEventClick={onEventClick}
-                style={{
-                  top: `${positioned.topPercent}${PERCENT_UNIT}`,
-                  height: `${positioned.heightPercent}${PERCENT_UNIT}`,
-                  left: `${(positioned.columnIndex / positioned.columnCount) * NUMBER_ONE_HUNDRED}${PERCENT_UNIT}`,
-                  width: `${NUMBER_ONE_HUNDRED / positioned.columnCount}${PERCENT_UNIT}`,
-                }}
-              />
-            ))}
+            <PositionedEventBlocks
+              events={positionTimedEvents(events, date)}
+              onEventClick={onEventClick}
+              onEventChange={onEventChange}
+              resizable={resizable}
+            />
           </div>
         </div>
       </div>

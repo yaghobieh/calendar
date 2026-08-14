@@ -19,7 +19,7 @@ import {
   VIEW_DAY,
   VIEW_MONTH,
   ZERO_MINUTES_LABEL,
-} from '../constants';
+} from '@constants';
 
 export const toDate = (value: Date | string): Date => {
   if (value instanceof Date) {

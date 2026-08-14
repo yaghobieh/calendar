@@ -5,6 +5,7 @@ import {
   CAL_MONTH_CELL_OTHER,
   CAL_MONTH_CELL_TODAY,
   CAL_MONTH_DATE,
+  CAL_MONTH_DATE_TODAY,
   CAL_MONTH_EVENTS,
   CAL_MONTH_GRID,
   CAL_MONTH_MORE,
@@ -12,6 +13,8 @@ import {
   CAL_MONTH_WEEKDAYS,
   SLOT_ALL_DAY,
 } from './MonthView.const';
+import { LAYOUT_MONTH } from '../RelationRibbons/RelationRibbons.const';
+import { RelationRibbons } from '../RelationRibbons';
 import { VARIANT_CHIP } from '../EventChip/EventChip.const';
 import { EventChip } from '../EventChip';
 import {
@@ -19,7 +22,7 @@ import {
   MORE_PREFIX,
   NUMBER_ONE,
   NUMBER_ZERO,
-} from '../../constants';
+} from '@constants';
 import {
   addDays,
   eventsForDay,
@@ -28,10 +31,10 @@ import {
   isSameMonth,
   joinClassNames,
   startOfDay,
-} from '../../utils';
+} from '@utils';
 
 export function MonthView(props: MonthViewProps) {
-  const { date, events, firstDayOfWeek, weekdays, onEventClick, onSlotClick } = props;
+  const { date, events, firstDayOfWeek, weekdays, onEventClick, onSlotClick, relationVisible, activeEventId } = props;
   const today = new Date();
   const cells = getMonthGrid(date, firstDayOfWeek);
   const weekdayLabels = [
@@ -73,7 +76,9 @@ export function MonthView(props: MonthViewProps) {
                 })
               }
             >
-              <span className={CAL_MONTH_DATE}>{cell.getDate()}</span>
+              <span className={joinClassNames(CAL_MONTH_DATE, isToday ? CAL_MONTH_DATE_TODAY : undefined)}>
+                {cell.getDate()}
+              </span>
               <div className={CAL_MONTH_EVENTS}>
                 {visible.map((event) => (
                   <EventChip
@@ -93,6 +98,13 @@ export function MonthView(props: MonthViewProps) {
             </div>
           );
         })}
+        <RelationRibbons
+          layout={LAYOUT_MONTH}
+          cells={cells}
+          events={events}
+          visible={relationVisible}
+          activeEventId={activeEventId}
+        />
       </div>
     </div>
   );

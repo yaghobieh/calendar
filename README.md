@@ -59,7 +59,15 @@ Focus the calendar root (`tabIndex={0}`):
 
 Set `mode="light"` or `mode="dark"`. Dark mode also follows `prefers-color-scheme` when `mode` is omitted.
 
-CSS variables: `--cal-primary`, `--cal-border`, `--cal-bg`, `--cal-text`, `--cal-muted`, `--cal-today`, `--cal-event`.
+Pass `theme` or a `config` object (`defineCalendarConfig`) to set `--cal-primary`, `--cal-border`, `--cal-bg`, `--cal-text`, `--cal-muted`, `--cal-today`, `--cal-event`.
+
+## Events
+
+Clicking a chip opens a compact Outlook-style popup (title, subtitle, time, severity icon, people, description). Edit flips the card. Drag the bottom edge of a timed week or day block to resize; `onEventChange` receives the new end time. The edit icon, close icon, Save, and Cancel are configurable via `eventModal`. Pass a `people` collection (`avatar`, `name`, `fullName`, `email`, `phone`, `linkedin`, `facebook`, `profileUrl`, `title`) and assign them with `peopleIds`. Hover a person chip for name, avatar, email, and phone; click for the full profile. Override connection icons with `personIcons` and severity marks with `severityIcons` (`none` | `low` | `normal` | `high` | `urgent`). Invite uses an in-flow search dropdown (`translations.inviteLabel`). Set `relatedTo` on events to draw relation ribbons across month and week; hover a ribbon to see both event titles and times. `relations.visible` is `'always'`, `'onClick'`, or `'never'`. Edit **Relation with** against the full event list (`editModal.fields.relatedTo`); choosing a related event draws the ribbons immediately. Set `recurrence` on an event (`daily`, `weekly`, `monthly`, `everyXMonths`, `yearly`) to repeat it in the visible range. Click an empty month day to open a create popup (`eventModal.createOnSlot`). Open/close effects: `fade`, `scale`, `slideUp`, `none` — also style `--cal-modal-open-duration`, `--cal-modal-header-bg`, `--cal-modal-body-bg`. All popup labels go through `translations`.
+
+`layout` / `defaultLayout` is `'contained'` or `'fullPage'` (header icon toggle, overridable with `layoutIcons`). `eventModal.containment` is `'page'` (covers the viewport) or `'calendar'` (stays inside the calendar root).
+
+Previous / Today / Next and Month / Week / Day / Agenda live in `Calendar`. Pass `navIcons` to swap the nav labels for icons.
 
 ## Version policy
 

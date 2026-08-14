@@ -1,6 +1,10 @@
 export const CAL_EVENT_CHIP = 'Cal-EventChip';
 export const CAL_EVENT_CHIP_BLOCK = 'Cal-EventChip--block';
 export const CAL_EVENT_CHIP_ALL_DAY = 'Cal-EventChip--allDay';
+export const CAL_EVENT_CHIP_LIVE = 'Cal-EventChip--live';
+export const CAL_EVENT_CHIP_ALERT = 'Cal-EventChip__alert';
+export const CAL_EVENT_CHIP_RESIZE = 'Cal-EventChip__resize';
+export const CAL_EVENT_CHIP_RESIZING = 'Cal-EventChip--resizing';
 export const VARIANT_CHIP = 'chip' as const;
 export const VARIANT_BLOCK = 'block' as const;
 export const BUTTON_TYPE = 'button' as const;

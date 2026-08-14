@@ -4,6 +4,7 @@ export const CAL_DAY_ALLDAY = 'Cal-DayView__allday';
 export const CAL_DAY_BODY = 'Cal-DayView__body';
 export const CAL_DAY_GUTTER = 'Cal-DayView__gutter';
 export const CAL_DAY_DAY = 'Cal-DayView__day';
+export const CAL_DAY_DAY_TODAY = 'Cal-DayView__day--today';
 export const CAL_DAY_SLOT = 'Cal-DayView__slot';
 export const CAL_DAY_COLUMNS = 'Cal-DayView__columns';
 export const CAL_DAY_COLUMN = 'Cal-DayView__column';
