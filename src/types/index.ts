@@ -10,6 +10,8 @@ export type {
   CalendarEditFieldsConfig,
   CalendarRelationsConfig,
   CalendarEvent,
+  CalendarResource,
+  SchedulerThemeChoice,
   CalendarPerson,
   CalendarPersonIcons,
   CalendarEventSeverity,

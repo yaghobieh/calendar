@@ -46,6 +46,14 @@ export interface CalendarSeverityIcons {
   urgent?: ReactNode;
 }
 
+export interface CalendarResource {
+  id: string;
+  title: string;
+  color: string;
+}
+
+export type SchedulerThemeChoice = 'default' | 'light' | 'dark';
+
 export interface CalendarEvent {
   id: string;
   title: string;
@@ -53,6 +61,7 @@ export interface CalendarEvent {
   end: Date | string;
   allDay?: boolean;
   color?: string;
+  resourceId?: string;
   description?: string;
   relatedTo?: string[];
   peopleIds?: string[];

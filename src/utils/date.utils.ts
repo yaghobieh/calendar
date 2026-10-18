@@ -40,6 +40,9 @@ export const addDays = (date: Date, amount: number): Date => {
   return next;
 };
 
+export const startOfMonth = (date: Date): Date =>
+  new Date(date.getFullYear(), date.getMonth(), NUMBER_ONE);
+
 export const addMonths = (date: Date, amount: number): Date => {
   const next = new Date(date);
   next.setMonth(next.getMonth() + amount);

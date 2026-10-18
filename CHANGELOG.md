@@ -5,7 +5,32 @@ All notable changes to Forge Calendar will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.2] — Unreleased
+## [1.0.2] - 2026-10-18
+
+### Added
+
+- `EventCalendar` month grid with time and title on each day, previous, next, today, and a Month view label (FORGE-197)
+- Mini month navigator beside the grid, using the Bear calendar
+- `ResourceFilter` checkbox list for Work, Health, Social, Personal, Travel, and Family. Unchecked resources hide their events (FORGE-198)
+- `EventEditDialog` sits beside the calendar, with Bear Input, DatePicker, TimePicker, Switch, Select, and Button (FORGE-199)
+- `EventTimeline` with one row per resource and event bars on a seven-month scale (FORGE-200)
+- Optional `resourceId` on `CalendarEvent`, plus `CalendarResource` and `DEFAULT_RESOURCES`
+- `@forgedevstack/bear` peer dependency for the scheduler controls
+
+Import the new views from the package entry, and load Bear styles next to the calendar styles:
+
+```tsx
+import { EventCalendar, EventTimeline, DEFAULT_RESOURCES } from '@forgedevstack/calendar';
+import type { CalendarEvent, CalendarResource } from '@forgedevstack/calendar';
+import '@forgedevstack/calendar/styles.css';
+import '@forgedevstack/bear/styles.css';
+```
+
+`EventEditDialog` and `ResourceFilter` are exported from the same entry when you want them on their own.
+
+These views are an original Forge layout. Dragging events is not included.
+
+## [1.0.3] — Unreleased
 
 ### Added
 
