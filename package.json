@@ -1,6 +1,6 @@
 {
   "name": "@forgedevstack/calendar",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "React scheduler and event calendar for month, week, day, and agenda views. The scheduling layer of ForgeStack.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -37,9 +37,11 @@
   },
   "peerDependencies": {
     "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react-dom": ">=18.0.0",
+    "@forgedevstack/bear": ">=1.0.8"
   },
   "devDependencies": {
+    "@forgedevstack/bear": "file:../bear",
     "@types/node": "^22.10.7",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
