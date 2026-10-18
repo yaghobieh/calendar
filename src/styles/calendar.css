@@ -1355,3 +1355,544 @@
   }
 }
 
+.Cal-Scheduler {
+  --cal-primary: #ec4899;
+  --cal-border: #e2e8f0;
+  --cal-bg: #ffffff;
+  --cal-text: #0f172a;
+  --cal-muted: #64748b;
+  --cal-bar-mix: #ffffff;
+  color: var(--cal-text);
+  background: transparent;
+  width: 100%;
+}
+
+.dark .Cal-Scheduler:not([data-cal-mode='light']),
+.bear-dark .Cal-Scheduler:not([data-cal-mode='light']),
+.Cal-Scheduler[data-cal-mode='dark'] {
+  --cal-primary: #ec4899;
+  --cal-border: #3f3f46;
+  --cal-bg: #18181b;
+  --cal-text: #fafafa;
+  --cal-muted: #a1a1aa;
+  --cal-bar-mix: #18181b;
+}
+
+.Cal-Scheduler[data-cal-mode='light'] {
+  --cal-primary: #ec4899;
+  --cal-border: #e2e8f0;
+  --cal-bg: #ffffff;
+  --cal-text: #0f172a;
+  --cal-muted: #64748b;
+  --cal-bar-mix: #ffffff;
+}
+
+.Cal-Scheduler__intro {
+  margin-bottom: 0.75rem;
+}
+
+.Cal-Scheduler__copy {
+  color: var(--cal-muted);
+  max-width: 46rem;
+}
+
+.Cal-Scheduler__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.Cal-Scheduler__select {
+  min-width: 9.5rem;
+}
+
+.Cal-EventCalendar__card,
+.Cal-EventTimeline__card {
+  background: var(--cal-bg);
+  border: 1px solid var(--cal-border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.Cal-EventCalendar__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--cal-border);
+}
+
+.Cal-EventCalendar__toolbarEnd {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: auto;
+}
+
+.Cal-EventCalendar__body {
+  display: flex;
+  align-items: stretch;
+  min-height: 40rem;
+}
+
+.Cal-EventCalendar__main,
+.Cal-EventCalendar__body > .Cal-EventTimeline__card {
+  flex: 1;
+  min-width: 0;
+}
+
+.Cal-EventCalendar__settings,
+.Cal-EventCalendar__range {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--cal-border);
+  background: var(--cal-bg);
+  color: var(--cal-text);
+}
+
+.Cal-EventEdit {
+  width: 22rem;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem 1.25rem;
+  border-left: 1px solid var(--cal-border);
+  background: var(--cal-bg);
+  color: var(--cal-text);
+  overflow: auto;
+}
+
+.Cal-EventEdit__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.Cal-EventShow {
+  padding: 0.75rem 1rem 1.25rem;
+}
+
+.Cal-EventShow__day + .Cal-EventShow__day {
+  margin-top: 0.85rem;
+}
+
+.Cal-EventShow__date {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--cal-muted);
+}
+
+.Cal-EventShow__item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--cal-border);
+  border-radius: 0.4rem;
+  background: var(--cal-bg);
+  color: var(--cal-text);
+  text-align: left;
+}
+
+.Cal-EventShow__dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.Cal-EventShow__empty {
+  margin: 0 0 0.35rem;
+  color: var(--cal-muted);
+  font-size: 0.85rem;
+}
+
+.Cal-EventYear {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  padding: 0.85rem;
+}
+
+.Cal-EventYear__month {
+  min-height: 5.5rem;
+  padding: 0.7rem;
+  border: 1px solid var(--cal-border);
+  border-radius: 0.5rem;
+  background: var(--cal-bg);
+  color: var(--cal-text);
+  text-align: left;
+}
+
+.Cal-EventYear__count {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--cal-muted);
+  font-size: 0.8rem;
+}
+
+.Cal-EventCalendar__side {
+  width: 16.5rem;
+  flex-shrink: 0;
+  padding: 0.75rem;
+  border-right: 1px solid var(--cal-border);
+}
+
+.Cal-EventCalendar__mini {
+  border: 1px solid var(--cal-border);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: var(--cal-bg);
+  color: var(--cal-text);
+}
+
+.Cal-EventCalendar__mini .Bear-Calendar,
+.Cal-EventCalendar__mini .Bear-Calendar__weekday,
+.Cal-EventCalendar__mini .Bear-Calendar__nav-btn,
+.Cal-EventCalendar__mini .Bear-Calendar__day {
+  background: var(--cal-bg);
+  color: var(--cal-text);
+  border-color: var(--cal-border);
+  box-shadow: none;
+}
+
+.Cal-EventCalendar__mini .Bear-Calendar__weekday,
+.Cal-EventCalendar__mini .Bear-Calendar__nav-btn {
+  color: var(--cal-muted);
+  background: transparent;
+}
+
+.Cal-EventCalendar__mini .Bear-Calendar__day {
+  background: transparent;
+}
+
+.Cal-EventCalendar__mini .Bear-Calendar__day--selected {
+  background: var(--cal-primary);
+  color: #ffffff;
+}
+
+.Cal-ResourceFilter {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--cal-border);
+  border-radius: 0.5rem;
+}
+
+.Cal-ResourceFilter__title {
+  margin-bottom: 0.5rem;
+}
+
+.Cal-ResourceFilter__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.Cal-EventMonth {
+  flex: 1;
+  min-width: 0;
+}
+
+.Cal-EventMonth__weekdays,
+.Cal-EventMonth__week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.Cal-EventMonth__weekday {
+  padding: 0.45rem 0.35rem;
+  text-align: center;
+  color: var(--cal-muted);
+  font-size: 0.75rem;
+  border-bottom: 1px solid var(--cal-border);
+}
+
+.Cal-EventMonth__week {
+  position: relative;
+}
+
+.Cal-EventMonth__day {
+  min-height: 7.25rem;
+  padding: 0.3rem;
+  border-top: 1px solid var(--cal-border);
+  border-left: 1px solid var(--cal-border);
+  background: var(--cal-bg);
+  cursor: pointer;
+}
+
+.Cal-EventMonth__day--outside {
+  background: color-mix(in srgb, var(--cal-muted) 8%, var(--cal-bg));
+  color: var(--cal-muted);
+}
+
+.Cal-EventMonth__date {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.8rem;
+}
+
+.Cal-EventMonth__date--today {
+  border-radius: 999px;
+  background: var(--cal-primary);
+  color: #ffffff;
+  padding: 0 0.35rem;
+}
+
+.Cal-EventMonth__events {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.Cal-EventMonth__item,
+.Cal-EventMonth__span,
+.Cal-Timeline__bar,
+.Cal-EventTimeline__bar {
+  border: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.Cal-EventMonth__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem 0.25rem;
+  width: 100%;
+  padding: 0.05rem 0.1rem;
+  background: transparent;
+  color: inherit;
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+
+.Cal-EventMonth__dot,
+.Cal-EventTimeline__dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.Cal-EventMonth__time {
+  color: var(--cal-muted);
+  flex-shrink: 0;
+}
+
+.Cal-EventMonth__title,
+.Cal-EventMonth__span,
+.Cal-EventTimeline__bar {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.Cal-EventMonth__title {
+  flex: 1 1 4.5rem;
+  min-width: 0;
+}
+
+.Cal-EventMonth__more {
+  color: var(--cal-muted);
+  font-size: 0.7rem;
+  padding-left: 0.7rem;
+}
+
+.Cal-EventMonth__spans {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.Cal-EventMonth__span {
+  position: absolute;
+  height: 1.15rem;
+  padding: 0 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1.15rem;
+  pointer-events: auto;
+}
+
+.Cal-EventEdit__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.Cal-EventEdit__heading {
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cal-muted);
+}
+
+.Cal-EventEdit__times {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.Cal-EventEdit__colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.Cal-EventEdit__colorBtn {
+  width: 1.75rem;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+}
+
+.Cal-EventEdit__swatch {
+  display: block;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 0.15rem;
+}
+
+.Cal-EventEdit__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.Cal-EventEdit__delete {
+  color: #dc2626;
+  text-transform: uppercase;
+}
+
+.Cal-EventEdit__actions button:last-child {
+  text-transform: uppercase;
+}
+
+.Cal-EventTimeline__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.Cal-EventTimeline__card {
+  overflow: auto;
+}
+
+.Cal-EventTimeline__year,
+.Cal-EventTimeline__head,
+.Cal-EventTimeline__row {
+  display: grid;
+  align-items: stretch;
+  min-width: 52rem;
+}
+
+.Cal-EventTimeline__year > :last-child,
+.Cal-EventTimeline__months {
+  grid-column: 2 / -1;
+  min-width: 0;
+}
+
+.Cal-EventTimeline__year {
+  padding-top: 0.75rem;
+  text-align: center;
+}
+
+.Cal-EventTimeline__gutter,
+.Cal-EventTimeline__label {
+  padding: 0.5rem 0.75rem;
+  border-right: 1px solid var(--cal-border);
+}
+
+.Cal-EventTimeline__gutter {
+  color: var(--cal-muted);
+}
+
+.Cal-EventTimeline__months,
+.Cal-EventTimeline__lines {
+  display: grid;
+  height: 100%;
+}
+
+.Cal-EventTimeline__month,
+.Cal-EventTimeline__line {
+  border-left: 1px solid var(--cal-border);
+  text-align: center;
+  padding: 0.35rem 0.15rem;
+  color: var(--cal-muted);
+}
+
+.Cal-EventTimeline__row {
+  border-top: 1px solid var(--cal-border);
+  min-height: 3.25rem;
+}
+
+.Cal-EventTimeline__label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.Cal-EventTimeline__track {
+  position: relative;
+  grid-column: 2 / -1;
+}
+
+.Cal-EventTimeline__lines {
+  position: absolute;
+  inset: 0;
+}
+
+.Cal-EventTimeline__bar {
+  position: absolute;
+  height: 1.35rem;
+  min-width: 4.5rem;
+  max-width: 100%;
+  padding: 0 0.45rem;
+  border-radius: 0.3rem;
+  font-size: 0.75rem;
+  line-height: 1.35rem;
+}
+
+@media (max-width: 800px) {
+  .Cal-EventCalendar__body {
+    flex-direction: column;
+  }
+
+  .Cal-EventCalendar__side,
+  .Cal-EventEdit {
+    width: 100%;
+    border-right: 0;
+    border-left: 0;
+    border-bottom: 1px solid var(--cal-border);
+  }
+
+  .Cal-EventCalendar__toolbar {
+    flex-wrap: wrap;
+  }
+
+  .Cal-EventEdit__times {
+    grid-template-columns: 1fr;
+  }
+
+  .Cal-EventTimeline__card {
+    overflow-x: auto;
+  }
+}
+

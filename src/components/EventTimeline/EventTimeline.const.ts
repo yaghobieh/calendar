@@ -1,0 +1,20 @@
+export const CAL_EVENT_TIMELINE = 'Cal-EventTimeline';
+export const CAL_TIMELINE_CARD = 'Cal-EventTimeline__card';
+export const CAL_TIMELINE_NAV = 'Cal-EventTimeline__nav';
+export const CAL_TIMELINE_YEAR = 'Cal-EventTimeline__year';
+export const CAL_TIMELINE_HEAD = 'Cal-EventTimeline__head';
+export const CAL_TIMELINE_GUTTER = 'Cal-EventTimeline__gutter';
+export const CAL_TIMELINE_MONTHS = 'Cal-EventTimeline__months';
+export const CAL_TIMELINE_MONTH = 'Cal-EventTimeline__month';
+export const CAL_TIMELINE_ROW = 'Cal-EventTimeline__row';
+export const CAL_TIMELINE_LABEL = 'Cal-EventTimeline__label';
+export const CAL_TIMELINE_DOT = 'Cal-EventTimeline__dot';
+export const CAL_TIMELINE_TRACK = 'Cal-EventTimeline__track';
+export const CAL_TIMELINE_LINES = 'Cal-EventTimeline__lines';
+export const CAL_TIMELINE_LINE = 'Cal-EventTimeline__line';
+export const CAL_TIMELINE_BAR = 'Cal-EventTimeline__bar';
+
+export const BUTTON_TYPE = 'button';
+export const BAR_LANE_PX = 28;
+export const BAR_TOP_PX = 8;
+export const GUTTER_WIDTH = '11rem';

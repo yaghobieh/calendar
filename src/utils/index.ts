@@ -2,6 +2,7 @@ export {
   toDate,
   startOfDay,
   addDays,
+  startOfMonth,
   addMonths,
   startOfWeek,
   isSameDay,
@@ -44,6 +45,26 @@ export {
   visibleRangeForView,
   expandRecurringEvents,
 } from './recurrence.utils';
+
+export {
+  eventColor,
+  isMultiDayEvent,
+  weekEventSpans,
+  timelineBars,
+  filterEventsByResources,
+  withoutHiddenEvents,
+  upsertEvent,
+  createResourceDraft,
+  formatEventClock,
+  formatMonthShort,
+  timelineYearLabel,
+  tintedBarStyle,
+  eventsForResource,
+  unassignedEvents,
+  resourceIds,
+} from './scheduler.utils';
+
+export type { WeekEventSpan, TimelineBarPlacement } from './scheduler.utils';
 
 export {
   eventDataAttrs,

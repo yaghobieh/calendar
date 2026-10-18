@@ -1,2 +1,10 @@
 export { Calendar } from './Calendar';
+export { EventCalendar } from './EventCalendar';
+export { EventTimeline } from './EventTimeline';
+export { EventEditDialog } from './EventEditDialog';
+export { ResourceFilter } from './ResourceFilter';
 export type { CalendarProps } from '../types';
+export type { EventCalendarProps } from './EventCalendar';
+export type { EventTimelineProps } from './EventTimeline';
+export type { EventEditDialogProps } from './EventEditDialog';
+export type { ResourceFilterProps } from './ResourceFilter';

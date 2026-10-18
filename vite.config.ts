@@ -25,7 +25,7 @@ export default defineConfig({
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      external: ['react', 'react-dom', 'react/jsx-runtime', '@forgedevstack/bear'],
       output: {
         preserveModules: true,
         preserveModulesRoot: 'src',
